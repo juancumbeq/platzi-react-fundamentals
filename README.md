@@ -229,7 +229,239 @@ function TodoCounter({total, completed}){
 ```
 After the web page rendering all the css files used can be found inside the head tag.
 
+  ### Dynamic classes
+When it comes to apply styles to the xml tags we can do it using static classes as we can see in the example below.
+```
+function TodoItem(props) {
+  return(
+    <li className="TodoItem">
+      <span className="Icon Icon-check Icon-check--active">
+        V
+      </span>
+      <p className="TodoItem-p TodoItem-p--complete">{props.text}
+      </p>
+      <span className="Icon Icon-delete">
+        X
+      </span>
+    </li>
+  );
+}
+```
 
+However if we want to use certain classes based for example on the task completed status we need to use dynamic classes. The syntax is different because the template literals must be used.
+```
+function TodoItem(props) {
+  return(
+    <li className="TodoItem">
+      <span className={`Icon Icon-check ${props.completed && "Icon-check--active"}`}>
+        V
+      </span>
+      <p className={`TodoItem-p ${props.completed && "TodoItem-p--complete"}`}>{props.text}
+      </p>
+      <span className="Icon Icon-delete">
+        X
+      </span>
+    </li>
+  );
+}
+```
+
+The line below is a JavaScript expression that evaluates the property completed and if it is true inserts the "Icon-check--active" class.
+```
+${props.completed && "Icon-check--active"}
+```
+
+<br>
+<br>
+<br>
+
+# INTERACTION WITH REACT.JS
+  ## [REACT EVENTS: ONCLICK, ONCHANGE]()
+The events in React must be written using camelCase and unlike JavaScript or HTML the event must contain a function because React transforms every onClick, onChange, etc... into an eventListener.
+
+```
+function CreateTodoButton() {
+  return(
+    <button className="CreateTodoButton"
+    onClick={() => console.log('le diste click')}
+    >+</button>
+  ); 
+}
+```
+
+<br>
+<br>
+
+  ## [WHAT IS THE STATE?]()
+State is like a variable where we can store data to be used inside the xml code and viceversa. The great advantage with JS is that every time the state changes the component is rendered again.
+```
+function TodoSearch(){
+  
+  const [searchValue, setSearchValue] = React.useState('');
+
+  return(
+    <input placeholder="Cortar cebolla"
+    className="TodoSearch"
+    value={searchValue}
+    onChange={(event) => {
+      setSearchValue(event.target.value);
+    }}/>
+  );
+}
+```
+
+  ### Virtual DOM vs DOM
+
+
+
+
+
+<br>
+<br>
+
+  ## [COUNTING TODOS: SHARING STATE BETWEEN COMPONENTS]()
+Thanks to the props and the state sharing data between components is quite simple. In the following example we want to see a console log everytime the user writes something inside the input field:
+
+As we can see the state `searchValue` and its method is passed as a prop to the TodoSeach component.
+```
+function App() {
+  const [searchValue, setSearchValue] = React.useState('');
+  console.log('Los usuarios buscan todos de ' + searchValue)
+
+  return (
+    <React.Fragment>
+      <TodoCounter completed={16} total={25}/>
+      <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue}/>
+      {/* React treats all the content insider a tag as the children property */}
+      <TodoList>
+        {defaultTodos.map(todo => (
+          <TodoItem 
+            key={todo.text} 
+            text={todo.text}
+            completed={todo.completed}/>
+        ))}
+      </TodoList>
+
+      <CreateTodoButton/>
+    </React.Fragment>
+  );
+}
+```
+
+Inside the TodoSearch component we use the props to update the state, forcing a rerendering of the App component, showing the console log.
+```
+function TodoSearch({searchValue, setSearchValue}){
+  
+  return(
+    <input placeholder="Cortar cebolla"
+    className="TodoSearch"
+    value={searchValue}
+    onChange={(event) => {
+      setSearchValue(event.target.value);
+    }}/>
+  );
+}
+```
+
+  ### `!!`
+`!!` this syntax allows to reduce every condition result to true or false. For example, in the code below if we do not use the `!!` the arrow function would return the value contained inside the completed property. If that value is a string we can transform that into a boolean value by using `!!`
+```
+todos.filter(todo => !!todo.completed);
+```
+
+<br>
+<br>
+
+  ## [FILTERING TODOS]()
+To do the filtering process it is necessary to apply the `filter()` method to the `todos` array, the callback function will use the `includes()`method to find match between the todoText and the searchText.
+
+Notice that both are transformed to lowercase() to find all ocurrencies.
+```
+function App() {
+	const [todos, setTodos] = React.useState(defaultTodos);
+	const [searchValue, setSearchValue] = React.useState('');
+
+	const completed = todos.filter((todo) => !!todo.completed).length;
+	const totalTodos = todos.length;
+
+	const searchedTodos = todos.filter((todo) => {
+    const todoText = todo.text.toLowerCase();
+    const searchText = searchValue.toLowerCase();
+		return todoText.includes(searchText);
+	});
+
+	return (
+		<React.Fragment>
+			<TodoCounter completed={completed} total={totalTodos} />
+			<TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
+			<TodoList>
+				{searchedTodos.map((todo) => (
+					<TodoItem
+						key={todo.text}
+						text={todo.text}
+						completed={todo.completed}
+					/>
+				))}
+			</TodoList>
+
+			<CreateTodoButton />
+		</React.Fragment>
+	);
+}
+```
+
+<br>
+<br>
+
+  ## [COMPLETING AND DELETING TODOS]()
+  ### Completing
+The todoItem component code is the following:
+```
+<span 
+  className={`Icon Icon-check ${props.completed && "Icon-check--active"}`}
+  onClick={props.onComplete}
+>
+```
+The onClick event executes a function received as a prop. So the full logic is handled in the App component, where the code is:
+```
+const completeTodos = (text) => {
+  const newTodos = [...todos];
+  const todoIndex = newTodos.findIndex((todo) => todo.text === text);
+  newTodos[todoIndex].completed = true;
+  setTodos(newTodos);
+};
+```
+In the code above the function completeTodos, receive a text parameter. A new array is created based on the original one. After that, we need to know the index of the todo selected to be completed. The changes are setted up and the state todos is updated.
+
+In the xml code we have:
+```
+<TodoItem
+  key={todo.text}
+  text={todo.text}
+  completed={todo.completed}
+  onComplete={() => completeTodos(todo.text)}
+  onDelete={() => deleteTodos(todo.text)}
+/>
+```
+
+To prevent a function from executing immediately upon the initial rendering, it's necessary to wrap the function inside another function. By using an arrow function, React maintains a reference to the function that will be executed later based on an event, rather than executing it immediately.
+
+  ### Deleting
+The deleting process is identical, with the difference that the splice method is used to delete the todo selected.
+```
+const deleteTodos = (text) => {
+  const newTodos = [...todos];
+  const todoIndex = newTodos.findIndex((todo) => todo.text === text);
+  newTodos.splice(todoIndex, 1);
+  setTodos(newTodos);
+};
+```
+
+<br>
+<br>
+
+  ## [Icons in React: Libraries and SVG]()
+  
 
 
 <br>
