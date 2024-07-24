@@ -459,9 +459,84 @@ const deleteTodos = (text) => {
 
 <br>
 <br>
+<br>
 
-  ## [Icons in React: Libraries and SVG]()
+# CUSTOM ICON LIBRARY
+  ## [ICONS IN REACT: LIBRARIES AND SVG]()
+Until this moment the project icons have been letters, but we will change it to SVG file type.
   
+Inside the todoItem component, the span tag is replaced by custom components:
+```
+function TodoItem(props) {
+	return (
+		<li className='TodoItem'>
+			<CompleteIcon
+				className={`Icon Icon-check ${props.completed && 'Icon-check--active'}`}
+				onClick={props.onComplete}
+			/>
+
+			<p className={`TodoItem-p ${props.completed && 'TodoItem-p--complete'}`}>
+				{props.text}
+			</p>
+
+			<DeleteIcon className='Icon Icon-delete' onClick={props.onDelete} />
+		</li>
+	);
+}
+```
+
+The DeleteIcon and the CompleteIcon code is the following:
+```
+import React from 'react';
+import { TodoIcon } from './TodoIcon';
+
+function DeleteIcon() {
+	return <TodoIcon type='delete' color='red' />;
+}
+
+export { DeleteIcon };
+
+
+
+import React from 'react';
+import { TodoIcon } from './TodoIcon';
+
+function CompleteIcon() {
+	return <TodoIcon type='check' color='gray' />;
+}
+
+export { CompleteIcon };
+```
+
+As we can see in the previous snipet there are another component called TodoIcon, this component imports the svg files as components and based on what receives as a prop returns a check icon or a delete icon:
+```
+import { ReactComponent as CheckSVG } from '../resources/check.svg';
+import { ReactComponent as DeleteSVG } from '../resources/delete.svg';
+
+const iconTypes = {
+  "check": <CheckSVG/>,
+  "delete": <DeleteSVG/>,
+}
+
+function TodoIcon({ type }) {
+	return (
+		<span className={`Icon Icon-svg Icon-${type}`}>
+			{iconTypes[type]}
+		</span>
+	);
+}
+
+export { TodoIcon };
+```
+
+<br>
+<br>
+<br>
+
+
+# ADVANCED TOOLS: SCALABILITY, ORGANIZATION AND PERSISTENCE
+  ## [LOCAL STORAGE WITH REACT.JS]()
+
 
 
 <br>
