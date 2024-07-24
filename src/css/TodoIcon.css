@@ -25,10 +25,15 @@
 	right: 0;
 }
 
-.Icon-container-delete:hover {
-	color: red;
+.Icon-container-check:hover .Icon-svg {
+	fill: green;
 }
-.Icon-svg{
+
+.Icon-container-delete:hover .Icon-svg {
+	fill: red;
+}
+
+.Icon-svg {
 	width: 24px;
 	height: 24px;
 }

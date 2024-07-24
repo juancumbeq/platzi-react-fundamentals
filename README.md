@@ -13,7 +13,9 @@
 <br>
 
 # LAYOUT WITH REACT.JS
-  ## [WHAT IS A COMPONENT]()
+
+## [WHAT IS A COMPONENT]()
+
 A React component is a fundamental building block of a React application. It is a reusable piece of code that represents part of the user interface. Components can be thought of as custom HTML elements, and they can be nested, managed, and handled independently.
 
 React components come in two main types: functional components and class components.
@@ -28,7 +30,7 @@ Copiar código
 import React from 'react';
 
 function Greeting(props) {
-  return <h1>Hello, {props.name}!</h1>;
+return <h1>Hello, {props.name}!</h1>;
 }
 
 export default Greeting;
@@ -44,9 +46,9 @@ Copiar código
 import React, { Component } from 'react';
 
 class Greeting extends Component {
-  render() {
-    return <h1>Hello, {this.props.name}!</h1>;
-  }
+render() {
+return <h1>Hello, {this.props.name}!</h1>;
+}
 }
 
 export default Greeting;
@@ -69,19 +71,19 @@ import React from 'react';
 import Greeting from './Greeting';
 
 function App() {
-  return (
-    <div>
-      <Greeting name="Alice" />
-      <Greeting name="Bob" />
-      <Greeting name="Charlie" />
-    </div>
-  );
+return (
+<div>
+<Greeting name="Alice" />
+<Greeting name="Bob" />
+<Greeting name="Charlie" />
+</div>
+);
 }
 
 export default App;
 In this example, the App component uses the Greeting component three times, passing different name props to each instance. This demonstrates the reusability and composability of React components.
 
-  ## [TODO MACHINE COMPONENTS]()
+## [TODO MACHINE COMPONENTS]()
 
 <br>
 <br>
@@ -104,8 +106,10 @@ React just can return one single tag when it comes to components structure. Howe
 ```
 Another option is to delete the words: ``React.Fragment`` and it will work.
 
-  ### Children
-There are two types of tags, those that need an open and close tag and other that just have the open tag. The first type can have several components inside, so when it comes to rendering that components form the children property. 
+### Children
+
+There are two types of tags, those that need an open and close tag and other that just have the open tag. The first type can have several components inside, so when it comes to rendering that components form the children property.
+
 ```
 <TodoList>
   <TodoItem/>
@@ -115,6 +119,7 @@ There are two types of tags, those that need an open and close tag and other tha
 ```
 
 In this way we can access the property children and used to render other components:
+
 ```
 function TodoList({children}){
   return(
@@ -125,37 +130,42 @@ function TodoList({children}){
 }
 ```
 
-  ### ``Array.map()``
+### `Array.map()`
 The information inside the TodoItem must be dinamic, meaning it has to change based on external information. In the following example we use an array to render a TodoItem for every array element:
+
 ```
 <TodoList>
   {defaultTodos.map(todo => (
-    <TodoItem 
-      key={todo.text} 
+    <TodoItem
+      key={todo.text}
       text={todo.text}
       completed={todo.completed}/>
   ))}
 </TodoList>
 ```
 
-Notice that it is required to use the ``.map()``method.
+Notice that it is required to use the `.map()`method.
 
-  ### Key for ach children
+### Key for ach children
 It is important that every single child must have an specific key to diferencite it from others.
+
 ```
-<TodoItem 
+<TodoItem
   key={todo.text}>
 ```
 
-  ### Props
+### Props
 The information contained in every array element is passed to a component using the props.
+
 ```
-<TodoItem 
-  key={todo.text} 
+<TodoItem
+  key={todo.text}
   text={todo.text}
   completed={todo.completed}/>
 ```
+
 This is a method to send information that can be manipulated inside the component:
+
 ```
 function TodoItem(props) {
   return(
@@ -171,13 +181,15 @@ function TodoItem(props) {
 <br>
 <br>
 
-  ## [CSS STYLES IN REACT]()
+## [CSS STYLES IN REACT]()
 There are two methods to add styles to react components: inline styles and stylesheets.
 
-  ### Inline styles
+### Inline styles
+
 In the example below an object can be created with the CSS rules and then used that object inside the jsx code as a variable.
 
 Notice that the CSS properties syntax is camelCase, quite different from traditional CSS syntax.
+
 ```
 const estilos = {
   backgroundColor: 'red'
@@ -193,6 +205,7 @@ function TodoCounter({total, completed}){
 ```
 
 A shortcut can be applied, we can define the properties object directly inside the style attribute. Notice that a double {{}} is necessary.
+
 ```
 function TodoCounter({total, completed}){
   return(
@@ -206,8 +219,9 @@ function TodoCounter({total, completed}){
 }
 ```
 
-  ### Stylesheets
+### Stylesheets
 Another alternative is to use stylesheets where we can use the traditional CSS syntax. The CSS file must be imported into the component file to let the styles be applied.
+
 ```
 h1{
   font-size: 24px;
@@ -216,6 +230,7 @@ h1{
   padding: 48px;
 }
 ```
+
 ```
 import './TodoCounter.css';
 
@@ -227,10 +242,13 @@ function TodoCounter({total, completed}){
   );
 }
 ```
+
 After the web page rendering all the css files used can be found inside the head tag.
 
-  ### Dynamic classes
+### Dynamic classes
+
 When it comes to apply styles to the xml tags we can do it using static classes as we can see in the example below.
+
 ```
 function TodoItem(props) {
   return(
@@ -249,6 +267,7 @@ function TodoItem(props) {
 ```
 
 However if we want to use certain classes based for example on the task completed status we need to use dynamic classes. The syntax is different because the template literals must be used.
+
 ```
 function TodoItem(props) {
   return(
@@ -267,6 +286,7 @@ function TodoItem(props) {
 ```
 
 The line below is a JavaScript expression that evaluates the property completed and if it is true inserts the "Icon-check--active" class.
+
 ```
 ${props.completed && "Icon-check--active"}
 ```
@@ -276,7 +296,9 @@ ${props.completed && "Icon-check--active"}
 <br>
 
 # INTERACTION WITH REACT.JS
-  ## [REACT EVENTS: ONCLICK, ONCHANGE]()
+
+## [REACT EVENTS: ONCLICK, ONCHANGE]()
+
 The events in React must be written using camelCase and unlike JavaScript or HTML the event must contain a function because React transforms every onClick, onChange, etc... into an eventListener.
 
 ```
@@ -285,18 +307,20 @@ function CreateTodoButton() {
     <button className="CreateTodoButton"
     onClick={() => console.log('le diste click')}
     >+</button>
-  ); 
+  );
 }
 ```
 
 <br>
 <br>
 
-  ## [WHAT IS THE STATE?]()
+## [WHAT IS THE STATE?]()
+
 State is like a variable where we can store data to be used inside the xml code and viceversa. The great advantage with JS is that every time the state changes the component is rendered again.
+
 ```
 function TodoSearch(){
-  
+
   const [searchValue, setSearchValue] = React.useState('');
 
   return(
@@ -310,19 +334,17 @@ function TodoSearch(){
 }
 ```
 
-  ### Virtual DOM vs DOM
-
-
-
-
+### Virtual DOM vs DOM
 
 <br>
 <br>
 
-  ## [COUNTING TODOS: SHARING STATE BETWEEN COMPONENTS]()
+## [COUNTING TODOS: SHARING STATE BETWEEN COMPONENTS]()
+
 Thanks to the props and the state sharing data between components is quite simple. In the following example we want to see a console log everytime the user writes something inside the input field:
 
 As we can see the state `searchValue` and its method is passed as a prop to the TodoSeach component.
+
 ```
 function App() {
   const [searchValue, setSearchValue] = React.useState('');
@@ -335,8 +357,8 @@ function App() {
       {/* React treats all the content insider a tag as the children property */}
       <TodoList>
         {defaultTodos.map(todo => (
-          <TodoItem 
-            key={todo.text} 
+          <TodoItem
+            key={todo.text}
             text={todo.text}
             completed={todo.completed}/>
         ))}
@@ -349,9 +371,10 @@ function App() {
 ```
 
 Inside the TodoSearch component we use the props to update the state, forcing a rerendering of the App component, showing the console log.
+
 ```
 function TodoSearch({searchValue, setSearchValue}){
-  
+
   return(
     <input placeholder="Cortar cebolla"
     className="TodoSearch"
@@ -363,8 +386,10 @@ function TodoSearch({searchValue, setSearchValue}){
 }
 ```
 
-  ### `!!`
+### `!!`
+
 `!!` this syntax allows to reduce every condition result to true or false. For example, in the code below if we do not use the `!!` the arrow function would return the value contained inside the completed property. If that value is a string we can transform that into a boolean value by using `!!`
+
 ```
 todos.filter(todo => !!todo.completed);
 ```
@@ -372,10 +397,11 @@ todos.filter(todo => !!todo.completed);
 <br>
 <br>
 
-  ## [FILTERING TODOS]()
+## [FILTERING TODOS]()
 To do the filtering process it is necessary to apply the `filter()` method to the `todos` array, the callback function will use the `includes()`method to find match between the todoText and the searchText.
 
 Notice that both are transformed to lowercase() to find all ocurrencies.
+
 ```
 function App() {
 	const [todos, setTodos] = React.useState(defaultTodos);
@@ -413,16 +439,21 @@ function App() {
 <br>
 <br>
 
-  ## [COMPLETING AND DELETING TODOS]()
-  ### Completing
+## [COMPLETING AND DELETING TODOS]()
+
+### Completing
+
 The todoItem component code is the following:
+
 ```
-<span 
+<span
   className={`Icon Icon-check ${props.completed && "Icon-check--active"}`}
   onClick={props.onComplete}
 >
 ```
+
 The onClick event executes a function received as a prop. So the full logic is handled in the App component, where the code is:
+
 ```
 const completeTodos = (text) => {
   const newTodos = [...todos];
@@ -431,9 +462,11 @@ const completeTodos = (text) => {
   setTodos(newTodos);
 };
 ```
+
 In the code above the function completeTodos, receive a text parameter. A new array is created based on the original one. After that, we need to know the index of the todo selected to be completed. The changes are setted up and the state todos is updated.
 
 In the xml code we have:
+
 ```
 <TodoItem
   key={todo.text}
@@ -446,8 +479,9 @@ In the xml code we have:
 
 To prevent a function from executing immediately upon the initial rendering, it's necessary to wrap the function inside another function. By using an arrow function, React maintains a reference to the function that will be executed later based on an event, rather than executing it immediately.
 
-  ### Deleting
+### Deleting
 The deleting process is identical, with the difference that the splice method is used to delete the todo selected.
+
 ```
 const deleteTodos = (text) => {
   const newTodos = [...todos];
@@ -462,10 +496,13 @@ const deleteTodos = (text) => {
 <br>
 
 # CUSTOM ICON LIBRARY
-  ## [ICONS IN REACT: LIBRARIES AND SVG]()
+
+## [ICONS IN REACT: LIBRARIES AND SVG]()
+
 Until this moment the project icons have been letters, but we will change it to SVG file type.
-  
+
 Inside the todoItem component, the span tag is replaced by custom components:
+
 ```
 function TodoItem(props) {
 	return (
@@ -486,6 +523,7 @@ function TodoItem(props) {
 ```
 
 The DeleteIcon and the CompleteIcon code is the following:
+
 ```
 import React from 'react';
 import { TodoIcon } from './TodoIcon';
@@ -509,6 +547,7 @@ export { CompleteIcon };
 ```
 
 As we can see in the previous snipet there are another component called TodoIcon, this component imports the svg files as components and based on what receives as a prop returns a check icon or a delete icon:
+
 ```
 import { ReactComponent as CheckSVG } from '../resources/check.svg';
 import { ReactComponent as DeleteSVG } from '../resources/delete.svg';
@@ -531,8 +570,67 @@ export { TodoIcon };
 
 <br>
 <br>
-<br>
+ 
+  ## [ICONS WITH DYNAMICS COLORS]()
+In the previous class we created an object whose properties are the SVG components, but now this properties will contain a function that will receive a paremeter called color. With this color we will change the SVG color by using the `fill` attribute.
+```
+import { ReactComponent as CheckSVG } from '../resources/check.svg';
+import { ReactComponent as DeleteSVG } from '../resources/delete.svg';
+import '../css/TodoIcon.css';
 
+const iconTypes = {
+check: (color) => <CheckSVG className='Icon-svg' fill={color} />,
+delete: (color) => <DeleteSVG className='Icon-svg' fill={color} />,
+};
+
+function TodoIcon({ type, color, onClick }) {
+return (
+<span className={`Icon-container Icon-container-${type}`} onClick={onClick}>
+{iconTypes[type](color)}
+</span>
+);
+}
+
+export { TodoIcon };
+
+```
+
+On the other hand, to create the hover effect we defined it in the css file, however, now we got a SVG file so, we need to make use of the `fill` property:
+```
+
+.Icon-container-check:hover .Icon-svg {
+fill: green;
+}
+
+.Icon-container-delete:hover .Icon-svg {
+fill: red;
+}
+
+```
+
+  ### SVG FILL PROPERTY
+- SVG Component: When you import an SVG file as a React component, you can pass props to it just like any other React component.
+
+- `fill` Attribute: The `fill` attribute in an SVG defines the color of the shapes inside the SVG. By passing the `fill` prop to the CheckSVG and DeleteSVG components, you dynamically set the color of the SVG content.
+
+  ### `onClick`
+To be able to give functionality to the icons it is necessary to pass the props through multiple components until get to the TodoIcon, where it can execute the props passed inside an onClick event
+```
+
+function TodoIcon({ type, color, onClick }) {
+return (
+<span
+className={`Icon-container Icon-container-${type}`}
+onClick={onClick}>
+{iconTypes[type](color)}
+</span>
+);
+}
+```
+
+<br>
+<br>
+<br>
 
 # ADVANCED TOOLS: SCALABILITY, ORGANIZATION AND PERSISTENCE
   ## [LOCAL STORAGE WITH REACT.JS]()
@@ -544,4 +642,5 @@ export { TodoIcon };
 <br>
 
 # AUTHOR
-This project was developed by *Juan Cumbe*. If you have any questions or suggestions about the project, feel free to contact me via [e-mail](mailto:hello@juancumbe.com) or my [Linkedin](https://www.linkedin.com/in/juancumbeq/) profile. 
+This project was developed by *Juan Cumbe*. If you have any questions or suggestions about the project, feel free to contact me via [e-mail](mailto:hello@juancumbe.com) or my [Linkedin](https://www.linkedin.com/in/juancumbeq/) profile.
+```
