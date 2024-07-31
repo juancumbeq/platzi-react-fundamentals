@@ -1,10 +1,10 @@
-import { TodoCounter } from './TodoCounter';
-import { TodoSearch } from './TodoSearch';
-import { TodoList } from './TodoList';
-import { TodoItem } from './TodoItem/';
-import { CreateTodoButton } from './CreateTodoButton';
+import { TodoCounter } from '../TodoCounter';
+import { TodoSearch } from '../TodoSearch';
+import { TodoList } from '../TodoList';
+import { TodoItem } from '../TodoItem/';
+import { CreateTodoButton } from '../CreateTodoButton';
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 import React from 'react';
 import './App.css';

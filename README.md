@@ -722,7 +722,9 @@ Everytime the useLocalStorage() hook is called it will return a state and a meth
 <br>
 
   ## [ORGANIZATION OF FOLDERS AND FILES]()
+There are lots of ways to organize the foldes and the files of a React project. The way recommended is to follow Feature-First Directories, this method is based on creating a folder to store a component and its other files related with it.
 
+The same happens with the custom hooks, every one must be on a independent file.
 
 
 
