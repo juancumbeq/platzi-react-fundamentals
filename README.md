@@ -634,11 +634,98 @@ onClick={onClick}>
 
 # ADVANCED TOOLS: SCALABILITY, ORGANIZATION AND PERSISTENCE
   ## [LOCAL STORAGE WITH REACT.JS]()
+`Localstorage`allow us to save data in the browser, so if the user close the webpage or even close the browser the data will remain. But there are some specifications to make it work perfectly. The data stored in the localStorage must be a string so we must fo the following:
+```
+localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
+```
+In this case we are converting the TODOS array into a string by using the `stringify()` method.
 
+To recover the data we should use the `parse()` method, as we do in the following code:
+```
+const localStorageTodos = localStorage.getItem('TODOS_V1');
+	let parsedTodos;
 
-
+	if(!localStorageTodos)
+	{
+		localStorage.setItem('TODOS_V1', JSON.stringify([]));
+		parsedTodos = [];
+	}
+	else
+	{
+		parsedTodos = JSON.parse(localStorageTodos);
+	}
+```
+Fistly, we get the data from the localStorage using the `getItem()`method. If there is no data, we create the item using an empty array. On the other hand, if there is data we proceed to parse it.
 
   ### Data Persistence
+It is important to notice that every change must be update the localStorage item and the React state, so we implemented this function:
+```
+const saveTodos = (newTodos) =>{
+  setTodos(newTodos);
+  localStorage.setItem('TODOS_V1', JSON.stringify(newTodos));
+}
+```
+
+<br>
+<br>
+
+  ## [CUSTOM HOOKS]()
+In this class we are making an abstraction to be able to save data in the localStorage and update the React state. In the app component the code is:
+```
+function App() {
+	//- TODOS AND SEARCH VALUES
+	const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
+  ...
+}
+```
+
+The custom hook code is this:
+```
+function useLocalStorage(itemName, initialValue){
+	// Checking if the item already exists
+	const localStorageItem = localStorage.getItem(itemName);
+
+	let parsedItem;
+
+	// If not the state and the local are set to an empty array
+	if(!localStorageItem){
+		localStorage.setItem(itemName, JSON.stringify(initialValue));
+		parsedItem = initialValue;
+	}
+	else{
+		// If exists the item is parsed
+		parsedItem = JSON.parse(localStorageItem);
+	}
+
+	// New React State where item represents the the localStorage or the initialValue
+	const [item, setItem] = React.useState(parsedItem);
+
+	// UPDATE & SAVE TODOS
+	// Function to update the localStorage and the React state
+	const saveItem = (newItem) => {
+		localStorage.setItem(itemName, JSON.stringify(newItem));
+		setItem(newItem);
+	}
+
+	// Exporting the React state and the function to update it
+	return [item, saveItem];
+}
+```
+
+As we can see the custom hooks checks if the there is something in the localStorage, after that creates a new React state to store the parsedItem from the localStorage or the initialValue parameter.
+
+Inside the custom hook a new function is defined, this function updates the React state and the localStorage information.
+
+Everytime the useLocalStorage() hook is called it will return a state and a method to update it.
+
+<br>
+<br>
+
+  ## [ORGANIZATION OF FOLDERS AND FILES]()
+
+
+
+
 
 <br>
 <br>

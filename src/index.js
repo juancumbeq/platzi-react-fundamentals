@@ -5,10 +5,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Import the CSS file for styling the application
-import './css/index.css';
+import './index.css';
 
 // Import the main App component from the local 'App' module
-import App from './App';
+import App from './components/App';
 
 // Create a root element where the React application will be rendered
 // `document.getElementById('root')` selects the HTML element with the id 'root'

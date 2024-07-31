@@ -1,6 +1,6 @@
-import { ReactComponent as CheckSVG } from '../resources/check.svg';
-import { ReactComponent as DeleteSVG } from '../resources/delete.svg';
-import '../css/TodoIcon.css';
+import { ReactComponent as CheckSVG } from '../../resources/check.svg';
+import { ReactComponent as DeleteSVG } from '../../resources/delete.svg';
+import './TodoIcon.css';
 
 const iconTypes = {
 	check: (color) => <CheckSVG className='Icon-svg' fill={color} />,
