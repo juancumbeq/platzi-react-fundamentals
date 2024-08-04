@@ -726,8 +726,100 @@ There are lots of ways to organize the foldes and the files of a React project. 
 
 The same happens with the custom hooks, every one must be on a independent file.
 
+<br>
+<br>
 
+  ## [REACT COMPONENTS ABSTRACTION]()
+It is very common to split a component into the business management and the UI. For example, the App component is being divided:
+```
+function App() {
+	//- TODOS AND SEARCH VALUES
+	const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
+	const [searchValue, setSearchValue] = React.useState('');
 
+	//- TODOS STATUS
+	const completedTodos = todos.filter((todo) => !!todo.completed).length;
+	const totalTodos = todos.length;
+
+	// FILTERING
+	const searchedTodos = todos.filter((todo) => {
+		const todoText = todo.text.toLowerCase();
+		const searchText = searchValue.toLowerCase();
+		return todoText.includes(searchText);
+	});
+
+	// COMPLETING TODOS
+	const completeTodo = (text) => {
+		const newTodos = [...todos];
+		const todoIndex = newTodos.findIndex((todo) => todo.text === text);
+		newTodos[todoIndex].completed = true;
+		saveTodos(newTodos);
+	};
+
+	// DELETING TODOS
+	const deleteTodo = (text) => {
+		const newTodos = [...todos];
+		const todoIndex = newTodos.findIndex((todo) => todo.text === text);
+		newTodos.splice(todoIndex, 1);
+		saveTodos(newTodos);
+	};
+
+	return(
+		<AppUI
+			completedTodos={completedTodos}
+			totalTodos={totalTodos}
+			searchValue={searchValue}
+			setSearchValue={setSearchValue}
+			searchedTodos={searchedTodos}
+			completeTodo={completeTodo}
+			deleteTodo={deleteTodo}
+		/>
+	)
+}
+
+export default App;
+```
+
+```
+function AppUI({
+	completedTodos,
+	totalTodos,
+	searchValue,
+	setSearchValue,
+	searchedTodos,
+	completeTodo,
+	deleteTodo,
+}) {
+	return (
+		<>
+			<TodoCounter completed={completedTodos} total={totalTodos} />
+			<TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
+			<TodoList>
+				{searchedTodos.map((todo) => (
+					<TodoItem
+						key={todo.text}
+						text={todo.text}
+						completed={todo.completed}
+						onComplete={() => completeTodo(todo.text)}
+						onDelete={() => deleteTodo(todo.text)}
+					/>
+				))}
+			</TodoList>
+
+			<CreateTodoButton />
+		</>
+	);
+}
+
+export { AppUI };
+```
+
+As we can see all of the functionalities are passed as props to the UI.
+
+<br>
+<br>
+
+  ## [WHAT ARE THE REACT EFFECTS]()
 
 <br>
 <br>
