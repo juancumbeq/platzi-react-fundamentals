@@ -2,6 +2,9 @@ import React from 'react';
 import { AppUI } from './AppUI';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 
+
+// localStorage.removeItem('TODOS_V1', defaultTodos);
+
 // const defaultTodos = [
 // 	{ text: 'Cortar cebolla', completed: true },
 // 	{ text: 'Tomar el curso de Intro a React.js', completed: true },
@@ -10,11 +13,15 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 // ];
 
 // localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
-// localStorage.removeItem('TODOS_V1', defaultTodos);
-
+	
 function App() {
 	//- TODOS AND SEARCH VALUES
-	const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
+	const {
+		item: todos,
+		saveItem: saveTodos,
+		loading,
+		error,
+	} = useLocalStorage('TODOS_V1', []);
 	const [searchValue, setSearchValue] = React.useState('');
 
 	//- TODOS STATUS
@@ -44,8 +51,10 @@ function App() {
 		saveTodos(newTodos);
 	};
 
-	return(
+	return (
 		<AppUI
+			loading={loading}
+			error={error}
 			completedTodos={completedTodos}
 			totalTodos={totalTodos}
 			searchValue={searchValue}
@@ -54,7 +63,7 @@ function App() {
 			completeTodo={completeTodo}
 			deleteTodo={deleteTodo}
 		/>
-	)
+	);
 }
 
 export default App;

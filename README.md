@@ -820,6 +820,115 @@ As we can see all of the functionalities are passed as props to the UI.
 <br>
 
   ## [WHAT ARE THE REACT EFFECTS]()
+Sometimes there are process that must be executed once not in every component rendering or after certain circuntances.
+
+The `React.useEffect(() => {}, [])` allow us to set a function to be executed at the very first render and after every other component rendering.
+
+The second argument (optional) is an array where we can set the variables or the stated that will trigger the `useEffect`. It means it will be executed at the very first render and after a change in the state setted up.
+```
+	console.log('1');
+	
+  React.useEffect(() => {
+    console.log('Loooog 2');
+  });
+
+  React.useEffect(() => {
+    console.log('Loooog 2');
+  }, []);
+
+	React.useEffect(() => {
+		console.log('Loooog 2');
+	}, [totalTodos]);
+	
+	console.log('Log 3');
+```
+
+<br>
+<br>
+
+  ## [LOAD AND ERROR STATES]()
+In this class we applied the `useEffect()` to the TODOS loading, in order to get that the `useLocalStorage` hook code changed to:
+```
+function useLocalStorage(itemName, initialValue) {
+	// New React State where item represents the the localStorage or the initialValue
+	const [item, setItem] = React.useState(initialValue);
+	// loading and error states
+	const [loading, setLoading] = React.useState(true);
+	const [error, setError] = React.useState(false);
+
+	// useEffect to load data from localStorage
+	React.useEffect(() => {
+		// Checking if the item already exists
+		const localStorageItem = localStorage.getItem(itemName);
+
+		let parsedItem;
+
+		// If not the state and the local are set to an empty array
+		if (!localStorageItem) {
+			localStorage.setItem(itemName, JSON.stringify(initialValue));
+			parsedItem = initialValue;
+		} else {
+			// If exists the item is parsed
+			parsedItem = JSON.parse(localStorageItem);
+		}
+	});
+
+	// UPDATE & SAVE TODOS
+	// Function to update the localStorage and the React state
+	const saveItem = (newItem) => {
+		localStorage.setItem(itemName, JSON.stringify(newItem));
+		setItem(newItem);
+	};
+
+	// Exporting the React state, the function to update it, and the loading and error states
+	return {
+		item,
+		saveItem,
+		loading,
+		error,
+	};
+}
+```
+
+As we can see we are returning the loading a error states, in this case to the `App.js` file:
+```
+const {
+  item: todos,
+  saveItem: saveTodos,
+  loading,
+  error,
+} = useLocalStorage('TODOS_V1', []);
+```
+
+Notice that an object is returned, to change the properties name we have to use the `:`.
+
+The loading and error states are sent to `AppUI.js` using props:
+```
+<TodoList>
+  {/* Loading and error states */}
+  {loading && <p>Cargando datos...</p>}
+  {error && <p>Hubo en error!</p>}
+  {(!loading && searchedTodos.todos === 0) && <p>Añade un TODO!</p>}
+
+  {searchedTodos.map((todo) => (
+    <TodoItem
+      key={todo.text}
+      text={todo.text}
+      completed={todo.completed}
+      onComplete={() => completeTodo(todo.text)}
+      onDelete={() => deleteTodo(todo.text)}
+    />
+  ))}
+</TodoList>
+```
+
+As we can see different messages are displayed based on the props
+
+<br>
+<br>
+
+  ## [UPDATING STATES USING `useEffect`]()
+
 
 <br>
 <br>
