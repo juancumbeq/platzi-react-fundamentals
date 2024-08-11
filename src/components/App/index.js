@@ -2,7 +2,6 @@ import React from 'react';
 import { AppUI } from './AppUI';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 
-
 // localStorage.removeItem('TODOS_V1', defaultTodos);
 
 // const defaultTodos = [
