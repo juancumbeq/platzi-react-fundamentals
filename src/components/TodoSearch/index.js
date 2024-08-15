@@ -1,17 +1,22 @@
 import React from 'react';
-import './TodoSearch.css'
+import './TodoSearch.css';
+import { TodoContext } from '../TodoContext';
 
-function TodoSearch({searchValue, setSearchValue}){
-  
-  return(
-    <input placeholder="Cortar cebolla"
-    className="TodoSearch"
-    value={searchValue}
-    onChange={(event) => {
-      setSearchValue(event.target.value);
-    }}/>
-  );
+function TodoSearch() {
+	const { searchValue, setSearchValue } =
+		React.useContext(TodoContext);
+
+	return (
+		<input
+			placeholder='Cortar cebolla'
+			className='TodoSearch'
+			value={searchValue}
+			onChange={(event) => {
+				setSearchValue(event.target.value);
+			}}
+		/>
+	);
 }
 
-// Good practice, export a property objectt instead of an export default
+// Good practice, export a property object instead of an export default
 export { TodoSearch };
