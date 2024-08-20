@@ -18,7 +18,7 @@ This is my first React application. I've tested the technology before, but never
 - `useEffeect()` hook
 - Loading and error states
 - Loading skeletons
-- React Context with `useContext()`hook
+- React Context with `useContext()` hook
 - React Portals
 
 <br>
@@ -77,6 +77,64 @@ You don't have to ever use eject. The curated feature set is suitable for small 
 
 # INDEX
 
+- [LAYOUT WITH REACT.JS](#layout-with-reactjs)
+
+  - [WHAT IS A COMPONENT](#what-is-a-component)
+  - [HOW THE COMPONENTS COMUNICATE: PROPS AND ATTRIBUTES](#how-the-components-comunicate-props-and-attributes)
+    - [React Fragment](#react-fragment)
+    - [Children](#children)
+    - [Map method](#map-method)
+    - [Keys](#keys)
+    - [Props](#props)
+  - [CSS STYLES IN REACT](#css-styles-in-react)
+    - [Inline styles](#inline-styles)
+    - [Stylesheets](#stylesheets)
+    - [Dynamic classes](#dynamic-classes)
+
+- [INTERACTION WITH REACT.JS](#interaction-with-reactjs)
+  - [REACT EVENTS: ONCLICK, ONCHANGE](#react-events-onclick-onchange)
+  - [WHAT IS THE STATE?](#what-is-the-state)
+  - [COUNTING TODOS: SHARING STATE BETWEEN COMPONENTS](#counting-todos-sharing-state-between-components)
+    - [`!!`](#!!)
+  - [FILTERING TODOS](#filtering-todos)
+  - [COMPLETING AND DELETING TODOS](#completing-and-deleting-todos)
+    - [Completing](#completing)
+    - [Deleting](#deleting)
+
+- [CUSTOM ICON LIBRARY](#custom-icon-library)
+  - [ICONS IN REACT: LIBRARIES AND SVG](#icons-in-react-libraries-and-svg)
+  - [ICONS WITH DYNAMICS COLORS](#icons-with-dynamics-colors)
+    - [`onClick`](#onclick)
+      - [SVG fill property](#svg-fill-property)
+
+- [ADVANCED TOOLS: SCALABILITY, ORGANIZATION AND PERSISTENCE](#advanced-tools-scalability-organization-and-persistence)
+
+  - [LOCAL STORAGE WITH REACT.JS](#local-storage-with-reactjs)
+    - [Data Persistence](#data-persistence)
+  - [CUSTOM HOOKS](#custom-hooks)
+  - [REACT COMPONENTS ABSTRACTION](#react-components-abstraction)
+  - [UPDATING STATES USING `useEffect`](#updating-states-using-useeffect)
+  - [LOADING SKELETONS](#loading-skeletons)
+    - [`createContext()`](#createcontext)
+    - [Render Functions](#render-functions)
+  - [`useContext()`](#usecontext)
+
+- [DEPLOY](#deploy)
+
+  - [`npm run build`](#npm-run-build-1)
+  - [CUSTOM COMMANDS](#custom-commands)
+
+- [REACT: #UNDERTHEHOOD](#react-underthehood)
+
+  - [REACT 18](#react-18)
+  - [REACT 17](#react-17)
+
+- [CREATING REACT PROYECTS FROM SCRATCH](#creating-react-proyects-from-scratch)
+
+  - [CRATE REACT APP](#crate-react-app)
+
+- [AUTHOR](#author)
+
 <br>
 <br>
 <br>
@@ -94,13 +152,13 @@ Functional components are the simpler and more modern way to create components. 
 
 Here's an example of a functional component:
 
-javascript
-Copiar código
+```
 import React from 'react';
 
 function Greeting(props) {
-return <h1>Hello, {props.name}!</h1>;
+  return <h1>Hello, {props.name}!</h1>;
 }
+```
 
 export default Greeting;
 In this example, Greeting is a functional component that takes props (short for properties) as an argument and returns a JSX element (<h1>Hello, {props.name}!</h1>).
@@ -110,15 +168,15 @@ Class components were the traditional way to create components before the introd
 
 Here's an example of a class component:
 
-javascript
-Copiar código
+```
 import React, { Component } from 'react';
 
 class Greeting extends Component {
-render() {
-return <h1>Hello, {this.props.name}!</h1>;
+  render() {
+    return <h1>Hello, {this.props.name}!</h1>;
+  }
 }
-}
+```
 
 export default Greeting;
 In this example, Greeting is a class component that extends React.Component. It has a render method that returns a JSX element.
@@ -133,8 +191,7 @@ Lifecycle Methods: Class components have lifecycle methods like componentDidMoun
 Example Usage of Components
 Here's an example of how components can be used together:
 
-javascript
-Copiar código
+```
 // App.js
 import React from 'react';
 import Greeting from './Greeting';
@@ -149,17 +206,16 @@ return (
 </div>
 );
 }
+```
 
 export default App;
 In this example, the App component uses the Greeting component three times, passing different name props to each instance. This demonstrates the reusability and composability of React components.
 
-## [TODO MACHINE COMPONENTS]()
-
 <br>
 <br>
   
-  ## [HOW THE COMPONENTS COMUNICATE. PROPS AND ATTRIBUTES]()
-  ### ``React.fragment``
+## [HOW THE COMPONENTS COMUNICATE: PROPS AND ATTRIBUTES]()
+### React Fragment
 React just can return one single tag when it comes to components structure. Howevere if we do not want to return the full component content inside a ``<div>``tag we can use the ``<React.Fragment>``tag. This tag is used for return purpose, it does not appear in the final HTML
 ```
 <React.Fragment>
@@ -200,7 +256,7 @@ function TodoList({children}){
 }
 ```
 
-### `Array.map()`
+### Map method
 The information inside the TodoItem must be dinamic, meaning it has to change based on external information. In the following example we use an array to render a TodoItem for every array element:
 
 ```
@@ -216,7 +272,7 @@ The information inside the TodoItem must be dinamic, meaning it has to change ba
 
 Notice that it is required to use the `.map()`method.
 
-### Key for ach children
+### Keys
 It is important that every single child must have an specific key to diferencite it from others.
 
 ```
@@ -403,8 +459,6 @@ function TodoSearch(){
   );
 }
 ```
-
-### Virtual DOM vs DOM
 
 <br>
 <br>
@@ -641,9 +695,10 @@ export { TodoIcon };
 <br>
 <br>
  
-  ## [ICONS WITH DYNAMICS COLORS]()
+## [ICONS WITH DYNAMICS COLORS]()
 In the previous class we created an object whose properties are the SVG components, but now this properties will contain a function that will receive a paremeter called color. With this color we will change the SVG color by using the `fill` attribute.
-```
+
+```javascript
 import { ReactComponent as CheckSVG } from '../resources/check.svg';
 import { ReactComponent as DeleteSVG } from '../resources/delete.svg';
 import '../css/TodoIcon.css';
@@ -652,13 +707,15 @@ const iconTypes = {
 check: (color) => <CheckSVG className='Icon-svg' fill={color} />,
 delete: (color) => <DeleteSVG className='Icon-svg' fill={color} />,
 };
-
+<!-- prettier-ignore-start -->
 function TodoIcon({ type, color, onClick }) {
-return (
-<span className={`Icon-container Icon-container-${type}`} onClick={onClick}>
-{iconTypes[type](color)}
-</span>
-);
+  return (
+    <span 
+      className={`Icon-container Icon-container-${type}`} 
+      onClick={onClick}>
+      {iconTypes[type](color)}
+    </span>
+  );
 }
 
 export { TodoIcon };
@@ -675,10 +732,9 @@ fill: green;
 .Icon-container-delete:hover .Icon-svg {
 fill: red;
 }
-
 ```
 
-  ### SVG FILL PROPERTY
+### SVG fill property
 - SVG Component: When you import an SVG file as a React component, you can pass props to it just like any other React component.
 
 - `fill` Attribute: The `fill` attribute in an SVG defines the color of the shapes inside the SVG. By passing the `fill` prop to the CheckSVG and DeleteSVG components, you dynamically set the color of the SVG content.
