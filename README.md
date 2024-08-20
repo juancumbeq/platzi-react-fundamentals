@@ -1,7 +1,7 @@
 # React.js Fundamentals Course
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Finished%20-brightgreen"/>
+  <img src="https://img.shields.io/badge/Course-Finished%20-brightgreen"/>
 </p>
 
 <br>
@@ -24,13 +24,14 @@ This is my first React application. I've tested the technology before, but never
 <br>
 
 # WIREFRAMES
+
 [https://www.figma.com/design/3aZkIjXMEzBDACmWxqUVes/TODO-Machine-Mockup?node-id=0-1](https://www.figma.com/design/3aZkIjXMEzBDACmWxqUVes/TODO-Machine-Mockup?node-id=0-1)
 
 <br>
 
 # PROTOTYPE
-[https://www.figma.com/proto/3aZkIjXMEzBDACmWxqUVes/TODO-Machine-Mockup?type=design&amp%3Bnode-id=1-3&amp%3Bt=NH0HT6nS2TxaLKp4-1&amp%3Bscaling=min-zoom&amp%3Bpage-id=0%3A1&amp%3Bstarting-point-node-id=1%3A3&amp%3Bmode=design&node-id=1-3&starting-point-node-id=1%3A3](https://www.figma.com/proto/3aZkIjXMEzBDACmWxqUVes/TODO-Machine-Mockup?type=design&amp%3Bnode-id=1-3&amp%3Bt=NH0HT6nS2TxaLKp4-1&amp%3Bscaling=min-zoom&amp%3Bpage-id=0%3A1&amp%3Bstarting-point-node-id=1%3A3&amp%3Bmode=design&node-id=1-3&starting-point-node-id=1%3A3)
 
+[https://www.figma.com/proto/3aZkIjXMEzBDACmWxqUVes/TODO-Machine-Mockup?type=design&amp%3Bnode-id=1-3&amp%3Bt=NH0HT6nS2TxaLKp4-1&amp%3Bscaling=min-zoom&amp%3Bpage-id=0%3A1&amp%3Bstarting-point-node-id=1%3A3&amp%3Bmode=design&node-id=1-3&starting-point-node-id=1%3A3](https://www.figma.com/proto/3aZkIjXMEzBDACmWxqUVes/TODO-Machine-Mockup?type=design&amp%3Bnode-id=1-3&amp%3Bt=NH0HT6nS2TxaLKp4-1&amp%3Bscaling=min-zoom&amp%3Bpage-id=0%3A1&amp%3Bstarting-point-node-id=1%3A3&amp%3Bmode=design&node-id=1-3&starting-point-node-id=1%3A3)
 
 <br>
 
@@ -38,20 +39,22 @@ This is my first React application. I've tested the technology before, but never
 
 [https://juancumbeq.github.io/platzi-react-fundamentals/](https://juancumbeq.github.io/platzi-react-fundamentals/)
 
-
 <br>
 
 # HOW TO TRY THIS PROJECT ON LOCAL
+
 In the project directory, you can run:
 
-## ``npm start``
+## `npm start`
+
 Runs the app in the development mode.
 Open http://localhost:3000 to view it in your browser.
 
 The page will reload when you make changes.
 You may also see any lint errors in the console.
 
-## ``npm run build``
+## `npm run build`
+
 Builds the app for production to the build folder.
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
@@ -60,7 +63,8 @@ Your app is ready to be deployed!
 
 See the section about deployment for more information.
 
-## ``npm run eject``
+## `npm run eject`
+
 Note: this is a one-way operation. Once you eject, you can't go back!
 
 If you aren't satisfied with the build tool and configuration choices, you can eject at any time. This command will remove the single build dependency from your project.
