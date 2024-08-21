@@ -172,7 +172,7 @@ Here's an example of a functional component:
 import React from 'react';
 
 function Greeting(props) {
-return <h1>Hello, {props.name}!</h1>;
+	return <h1>Hello, {props.name}!</h1>;
 }
 
 export default Greeting;
@@ -200,92 +200,97 @@ export default Greeting;
 <br>
   
 ## [HOW THE COMPONENTS COMUNICATE: PROPS AND ATTRIBUTES]()
-### React Fragment
-React just can return one single tag when it comes to components structure. Howevere if we do not want to return the full component content inside a ``<div>``tag we can use the ``<React.Fragment>``tag. This tag is used for return purpose, it does not appear in the final HTML
-```
-<React.Fragment>
-  <TodoCounter completed={16} total={25}/>
-  <TodoSearch/>
-  <TodoList>
-    <TodoItem/>
-    <TodoItem/>
-    <TodoItem/>
-  </TodoList>
 
-  <CreateTodoButton/>
+### React Fragment
+
+React can only return a single tag in a component's structure. However, if we don't want to wrap the entire component content inside a `<div>` tag, we can use the `<React.Fragment>` tag. This tag is used for returning elements but doesn't appear in the final HTML.
+
+```javascript
+<React.Fragment>
+	<TodoCounter completed={16} total={25} />
+	<TodoSearch />
+	<TodoList>
+		<TodoItem />
+		<TodoItem />
+		<TodoItem />
+	</TodoList>
+
+	<CreateTodoButton />
 </React.Fragment>
 ```
-Another option is to delete the words: ``React.Fragment`` and it will work.
+
+Another option is to delete the words: `React.Fragment` and it will work.
 
 ### Children
 
-There are two types of tags, those that need an open and close tag and other that just have the open tag. The first type can have several components inside, so when it comes to rendering that components form the children property.
+There are two types of tags: those that require both an opening and closing tag, and those that only need an opening tag. The first type can contain multiple components, which are rendered using the `children` property.
 
-```
+```javascript
 <TodoList>
-  <TodoItem/>
-  <TodoItem/>
-  <TodoItem/>
+	<TodoItem />
+	<TodoItem />
+	<TodoItem />
 </TodoList>
 ```
 
-In this way we can access the property children and used to render other components:
+This way, we can access the `children` property and use it to render other components.
 
-```
-function TodoList({children}){
-  return(
-    <ul>
-      {children}
-    </ul>
-  );
+```javascript
+function TodoList({ children }) {
+	return <ul>{children}</ul>;
 }
 ```
 
 ### Map method
-The information inside the TodoItem must be dinamic, meaning it has to change based on external information. In the following example we use an array to render a TodoItem for every array element:
 
-```
+The information inside the `TodoItem` must be dynamic, meaning it should change based on external data. In the following example, we use an array to render a `TodoItem` for each element in the array:
+
+```javascript
 <TodoList>
-  {defaultTodos.map(todo => (
-    <TodoItem
-      key={todo.text}
-      text={todo.text}
-      completed={todo.completed}/>
-  ))}
+	{defaultTodos.map((todo) => (
+		<TodoItem
+			key={todo.text}
+			text={todo.text}
+			completed={todo.completed}
+		/>
+	))}
 </TodoList>
 ```
 
 Notice that it is required to use the `.map()`method.
 
 ### Keys
-It is important that every single child must have an specific key to diferencite it from others.
 
-```
+It's important that each child has a specific key to differentiate it from the others.
+
+```javascript
 <TodoItem
   key={todo.text}>
 ```
 
 ### Props
+
 The information contained in every array element is passed to a component using the props.
 
-```
+```javascript
 <TodoItem
-  key={todo.text}
-  text={todo.text}
-  completed={todo.completed}/>
+	key={todo.text}
+	text={todo.text}
+	completed={todo.completed}
+/>
 ```
 
 This is a method to send information that can be manipulated inside the component:
 
-```
+```javascript
 function TodoItem(props) {
-  return(
-    <li>
-      <span>V {props.completed}</span>
-      <p>{props.text}</p>
-      <span>X</span>
-    </li>
-  );
+	return (
+		<li>
+			<span>V {props.completed}</span>
+			<p>{props.text}</p>
+			<span>X</span>
+		</li>
+	);
 }
 ```
 
@@ -297,108 +302,118 @@ There are two methods to add styles to react components: inline styles and style
 
 ### Inline styles
 
-In the example below an object can be created with the CSS rules and then used that object inside the jsx code as a variable.
+In the example below, an object can be created with CSS rules and then used within the JSX code as a variable.
 
-Notice that the CSS properties syntax is camelCase, quite different from traditional CSS syntax.
+Note that the CSS property names use camelCase, which differs from traditional CSS syntax.
 
-```
+```javascript
 const estilos = {
-  backgroundColor: 'red'
-}
+	backgroundColor: 'red',
+};
 
-function TodoCounter({total, completed}){
-  return(
-    <h1 style={estilos}>
-      Has completado {completed} de {total} TODOS
-    </h1>
-  );
+function TodoCounter({ total, completed }) {
+	return (
+		<h1 style={estilos}>
+			Has completado {completed} de {total} TODOS
+		</h1>
+	);
 }
 ```
 
-A shortcut can be applied, we can define the properties object directly inside the style attribute. Notice that a double {{}} is necessary.
+A shortcut can be applied by defining the properties object directly inside the `style` attribute. Note that double `{{}}` braces are necessary.
 
-```
-function TodoCounter({total, completed}){
-  return(
-    <h1 style={{
-      backgroundColor: 'red',
-      fontSize: 24
-      }}>
-      Has completado {completed} de {total} TODOS
-    </h1>
-  );
+```javascript
+function TodoCounter({ total, completed }) {
+	return (
+		<h1
+			style={{
+				backgroundColor: 'red',
+				fontSize: 24,
+			}}
+		>
+			Has completado {completed} de {total} TODOS
+		</h1>
+	);
 }
 ```
 
 ### Stylesheets
-Another alternative is to use stylesheets where we can use the traditional CSS syntax. The CSS file must be imported into the component file to let the styles be applied.
 
-```
-h1{
-  font-size: 24px;
-  text-align: center;
-  margin: 0;
-  padding: 48px;
+Another option is to use stylesheets, where traditional CSS syntax can be used. The CSS file must be imported into the component file for the styles to be applied.
+
+```css
+h1 {
+	font-size: 24px;
+	text-align: center;
+	margin: 0;
+	padding: 48px;
 }
 ```
 
-```
+```javascript
 import './TodoCounter.css';
 
-function TodoCounter({total, completed}){
-  return(
-    <h1>
-      Has completado {completed} de {total} TODOS
-    </h1>
-  );
+function TodoCounter({ total, completed }) {
+	return (
+		<h1>
+			Has completado {completed} de {total} TODOS
+		</h1>
+	);
 }
 ```
 
-After the web page rendering all the css files used can be found inside the head tag.
+After the web page is rendered, all the CSS files used can be found within the `<head>` tag.
 
 ### Dynamic classes
 
-When it comes to apply styles to the xml tags we can do it using static classes as we can see in the example below.
+When applying styles to XML tags, we can use static classes, as shown in the example below.
 
-```
+```javascript
 function TodoItem(props) {
-  return(
-    <li className="TodoItem">
-      <span className="Icon Icon-check Icon-check--active">
-        V
-      </span>
-      <p className="TodoItem-p TodoItem-p--complete">{props.text}
-      </p>
-      <span className="Icon Icon-delete">
-        X
-      </span>
-    </li>
-  );
+	return (
+		<li className='TodoItem'>
+			<span className='Icon Icon-check Icon-check--active'>
+				V
+			</span>
+			<p className='TodoItem-p TodoItem-p--complete'>
+				{props.text}
+			</p>
+			<span className='Icon Icon-delete'>X</span>
+		</li>
+	);
 }
 ```
 
-However if we want to use certain classes based for example on the task completed status we need to use dynamic classes. The syntax is different because the template literals must be used.
+However, if we want to use certain classes based on conditions, such as the task's completion status, we need to use dynamic classes. The syntax differs because template literals must be used.
 
-```
+```javascript
 function TodoItem(props) {
-  return(
-    <li className="TodoItem">
-      <span className={`Icon Icon-check ${props.completed && "Icon-check--active"}`}>
-        V
-      </span>
-      <p className={`TodoItem-p ${props.completed && "TodoItem-p--complete"}`}>{props.text}
-      </p>
-      <span className="Icon Icon-delete">
-        X
-      </span>
-    </li>
-  );
+	return (
+		<li className='TodoItem'>
+			<span
+				className={`Icon Icon-check ${
+					props.completed && 'Icon-check--active'
+				}`}
+			>
+				V
+			</span>
+			<p
+				className={`TodoItem-p ${
+					props.completed &&
+					'TodoItem-p--complete'
+				}`}
+			>
+				{props.text}
+			</p>
+			<span className='Icon Icon-delete'>X</span>
+		</li>
+	);
 }
 ```
 
-The line below is a JavaScript expression that evaluates the property completed and if it is true inserts the "Icon-check--active" class.
+The line below is a JavaScript expression that evaluates the completed property and, if it is true, inserts the "Icon-check--active" class.
 
-```
+```javascript
 ${props.completed && "Icon-check--active"}
 ```
 
@@ -410,15 +425,20 @@ ${props.completed && "Icon-check--active"}
 
 ## [REACT EVENTS: ONCLICK, ONCHANGE]()
 
-The events in React must be written using camelCase and unlike JavaScript or HTML the event must contain a function because React transforms every onClick, onChange, etc... into an eventListener.
+Events in React must be written using camelCase. Unlike in JavaScript or HTML, the event handlers must be functions, because React transforms each onClick, onChange, etc., into an eventListener.
 
-```
+```javascript
 function CreateTodoButton() {
-  return(
-    <button className="CreateTodoButton"
-    onClick={() => console.log('le diste click')}
-    >+</button>
-  );
+	return (
+		<button
+			className='CreateTodoButton'
+			onClick={() =>
+				console.log('le diste click')
+			}
+		>
+			+
+		</button>
+	);
 }
 ```
 
@@ -427,21 +447,23 @@ function CreateTodoButton() {
 
 ## [WHAT IS THE STATE?]()
 
-State is like a variable where we can store data to be used inside the xml code and viceversa. The great advantage with JS is that every time the state changes the component is rendered again.
+State is like a variable used to store data for use within the JSX code and vice versa. The great advantage of using state in JavaScript is that every time the state changes, the component is re-rendered automatically.
 
-```
-function TodoSearch(){
+```javascript
+function TodoSearch() {
+	const [searchValue, setSearchValue] =
+		React.useState('');
 
-  const [searchValue, setSearchValue] = React.useState('');
-
-  return(
-    <input placeholder="Cortar cebolla"
-    className="TodoSearch"
-    value={searchValue}
-    onChange={(event) => {
-      setSearchValue(event.target.value);
-    }}/>
-  );
+	return (
+		<input
+			placeholder='Cortar cebolla'
+			className='TodoSearch'
+			value={searchValue}
+			onChange={(event) => {
+				setSearchValue(event.target.value);
+			}}
+		/>
+	);
 }
 ```
 
@@ -450,66 +472,78 @@ function TodoSearch(){
 
 ## [COUNTING TODOS: SHARING STATE BETWEEN COMPONENTS]()
 
-Thanks to the props and the state sharing data between components is quite simple. In the following example we want to see a console log everytime the user writes something inside the input field:
+Thanks to props and state, sharing data between components is quite simple. In the following example, we want to see a console log every time the user types something into the input field.
 
-As we can see the state `searchValue` and its method is passed as a prop to the TodoSeach component.
+As we can see the state `searchValue` and its method is passed as a prop to the `TodoSeach` component.
 
-```
+```javascript
 function App() {
-  const [searchValue, setSearchValue] = React.useState('');
-  console.log('Los usuarios buscan todos de ' + searchValue)
+	const [searchValue, setSearchValue] =
+		React.useState('');
+	console.log(
+		'Los usuarios buscan todos de ' + searchValue
+	);
 
-  return (
-    <React.Fragment>
-      <TodoCounter completed={16} total={25}/>
-      <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue}/>
-      {/* React treats all the content insider a tag as the children property */}
-      <TodoList>
-        {defaultTodos.map(todo => (
-          <TodoItem
-            key={todo.text}
-            text={todo.text}
-            completed={todo.completed}/>
-        ))}
-      </TodoList>
+	return (
+		<React.Fragment>
+			<TodoCounter completed={16} total={25} />
+			<TodoSearch
+				searchValue={searchValue}
+				setSearchValue={setSearchValue}
+			/>
+			{/* React treats all the content insider a tag as the children property */}
+			<TodoList>
+				{defaultTodos.map((todo) => (
+					<TodoItem
+						key={todo.text}
+						text={todo.text}
+						completed={todo.completed}
+					/>
+				))}
+			</TodoList>
 
-      <CreateTodoButton/>
-    </React.Fragment>
-  );
+			<CreateTodoButton />
+		</React.Fragment>
+	);
 }
 ```
 
-Inside the TodoSearch component we use the props to update the state, forcing a rerendering of the App component, showing the console log.
+Inside the `TodoSearch` component, we use the props to update the state, which forces a re-render of the App component and displays the console log.
 
-```
-function TodoSearch({searchValue, setSearchValue}){
-
-  return(
-    <input placeholder="Cortar cebolla"
-    className="TodoSearch"
-    value={searchValue}
-    onChange={(event) => {
-      setSearchValue(event.target.value);
-    }}/>
-  );
+```javascript
+function TodoSearch({
+	searchValue,
+	setSearchValue,
+}) {
+	return (
+		<input
+			placeholder='Cortar cebolla'
+			className='TodoSearch'
+			value={searchValue}
+			onChange={(event) => {
+				setSearchValue(event.target.value);
+			}}
+		/>
+	);
 }
 ```
 
 ### `!!`
 
-`!!` this syntax allows to reduce every condition result to true or false. For example, in the code below if we do not use the `!!` the arrow function would return the value contained inside the completed property. If that value is a string we can transform that into a boolean value by using `!!`
+The `!!` syntax reduces any value to either true or false. For example, in the code below, if we do not use `!!`, the arrow function would return the value contained in the completed property. If that value is a string, we can transform it into a boolean value by using `!!`.
 
-```
-todos.filter(todo => !!todo.completed);
+```javascript
+todos.filter((todo) => !!todo.completed);
 ```
 
 <br>
 <br>
 
 ## [FILTERING TODOS]()
-To do the filtering process it is necessary to apply the `filter()` method to the `todos` array, the callback function will use the `includes()`method to find match between the todoText and the searchText.
 
-Notice that both are transformed to lowercase() to find all ocurrencies.
+To do the filtering process it is necessary to apply the `filter()` method to the `todos` array, the callback function will use the `includes()`method to find a match between the `todoText` and the `searchText`.
+
+Notice that both are transformed to lowercase to find all ocurrencies.
 
 ```javascript
 function App() {
@@ -562,7 +596,7 @@ function App() {
 
 ### Completing
 
-The todoItem component code is the following:
+The `todoItem` component code is the following:
 
 ```javascript
 <span
@@ -571,7 +605,7 @@ The todoItem component code is the following:
 >
 ```
 
-The onClick event executes a function received as a prop. So the full logic is handled in the App component, where the code is:
+The `onClick` event executes a function received as a prop. So the full logic is handled in the App component, where the code is:
 
 ```javascript
 const completeTodos = (text) => {
@@ -584,9 +618,9 @@ const completeTodos = (text) => {
 };
 ```
 
-In the code above the function completeTodos, receive a text parameter. A new array is created based on the original one. After that, we need to know the index of the todo selected to be completed. The changes are setted up and the state todos is updated.
+In the code above, the `completeTodos` function receives a text parameter. A new array is created based on the original one. We then determine the index of the selected todo item to be marked as completed. The changes are applied, and the state todos is updated.
 
-In the xml code we have:
+In the JSX code, we have:
 
 ```javascript
 <TodoItem
@@ -598,10 +632,11 @@ In the xml code we have:
 />
 ```
 
-To prevent a function from executing immediately upon the initial rendering, it's necessary to wrap the function inside another function. By using an arrow function, React maintains a reference to the function that will be executed later based on an event, rather than executing it immediately.
+To prevent a function from executing immediately upon initial rendering, you need to wrap it in another function. By using an arrow function, React maintains a reference to the function, which will be executed later in response to an event, rather than executing it immediately.
 
 ### Deleting
-The deleting process is identical, with the difference that the splice method is used to delete the todo selected.
+
+The deletion process is similar, with the difference that the `splice` method is used to remove the selected todo item.
 
 ```javascript
 const deleteTodos = (text) => {
@@ -622,9 +657,9 @@ const deleteTodos = (text) => {
 
 ## [ICONS IN REACT: LIBRARIES AND SVG]()
 
-Until this moment the project icons have been letters, but we will change it to SVG file type.
+Until now, the project icons have been letters, but we will change them to SVG file types.
 
-Inside the todoItem component, the span tag is replaced by custom components:
+Inside the `TodoItem` component, the `<span>` tag is replaced by custom components:
 
 ```javascript
 function TodoItem(props) {
@@ -655,7 +690,7 @@ function TodoItem(props) {
 }
 ```
 
-The DeleteIcon and the CompleteIcon code is the following:
+The `DeleteIcon` and the `CompleteIcon` code is the following:
 
 ```javascript
 import React from 'react';
@@ -677,7 +712,7 @@ function CompleteIcon() {
 export { CompleteIcon };
 ```
 
-As we can see in the previous snipet there are another component called TodoIcon, this component imports the svg files as components and based on what receives as a prop returns a check icon or a delete icon:
+As we can see in the previous snippet, there is another component called TodoIcon. This component imports the SVG files as components and, based on the props it receives, returns either a check icon or a delete icon.
 
 ```javascript
 import { ReactComponent as CheckSVG } from '../resources/check.svg';
@@ -705,6 +740,7 @@ export { TodoIcon };
 <br>
  
 ## [ICONS WITH DYNAMICS COLORS]()
+
 In the previous class we created an object whose properties are the SVG components, but now this properties will contain a function that will receive a paremeter called color. With this color we will change the SVG color by using the `fill` attribute.
 
 ```javascript
@@ -728,7 +764,6 @@ function TodoIcon({ type, color, onClick }) {
 }
 
 export { TodoIcon };
-
 ```
 
 On the other hand, to create the hover effect we defined it in the css file, however, now we got a SVG file so, we need to make use of the `fill` property:
