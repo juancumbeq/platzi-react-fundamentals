@@ -738,10 +738,10 @@ export { TodoIcon };
 
 <br>
 <br>
- 
+
 ## [ICONS WITH DYNAMICS COLORS]()
 
-In the previous class we created an object whose properties are the SVG components, but now this properties will contain a function that will receive a paremeter called color. With this color we will change the SVG color by using the `fill` attribute.
+In the previous class, we created an object where the properties were SVG components. Now, these properties will contain a function that receives a parameter called color. This color will be used to change the SVG color by using the `fill` attribute.
 
 ```javascript
 import { ReactComponent as CheckSVG } from '../resources/check.svg';
@@ -780,26 +780,25 @@ On the other hand, to create the hover effect we defined it in the css file, how
 
 ### SVG fill property
 
-- SVG Component: When you import an SVG file as a React component, you can pass props to it just like any other React component.
+SVG Component: When you import an SVG file as a React component, you can pass props to it just like any other React component.
 
-- `fill` Attribute: The `fill` attribute in an SVG defines the color of the shapes inside the SVG. By passing the `fill` prop to the CheckSVG and DeleteSVG components, you dynamically set the color of the SVG content.
+`fill` Attribute: The `fill` attribute in an SVG defines the color of the shapes inside the SVG. By passing the `fill` prop to the CheckSVG and DeleteSVG components, you dynamically set the color of the SVG content.
 
-  ### `onClick`
+### `onClick`
 
-  To be able to give functionality to the icons it is necessary to pass the props through multiple components until get to the TodoIcon, where it can execute the props passed inside an onClick event
+To give functionality to the icons, it is necessary to pass props through multiple components until they reach the TodoIcon component. There, the props can be used to execute an `onClick` event.
 
-```
-
+```javascript
 function TodoIcon({ type, color, onClick }) {
-return (
-<span
-className={`Icon-container Icon-container-${type}`}
-onClick={onClick}>
-{iconTypes[type](color)}
-</span>
-);
+	return (
+		<span
+			className={`Icon-container Icon-container-${type}`}
+			onClick={onClick}
+		>
+			{iconTypes[type](color)}
+		</span>
+	);
 }
-
 ```
 
 <br>
@@ -810,48 +809,49 @@ onClick={onClick}>
 
 ## [LOCAL STORAGE WITH REACT.JS]()
 
-`Localstorage`allow us to save data in the browser, so if the user close the webpage or even close the browser the data will remain. But there are some specifications to make it work perfectly. The data stored in the localStorage must be a string so we must fo the following:
+`localStorage` allows us to save data in the browser, so even if the user closes the webpage or the browser, the data will remain. However, there are some specifications to ensure it works correctly. The data stored in `localStorage` must be a string, so we need to do the following:
 
-```
-
-localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
-
+```javascript
+localStorage.setItem(
+	'TODOS_V1',
+	JSON.stringify(defaultTodos)
+);
 ```
 
 In this case we are converting the TODOS array into a string by using the `stringify()` method.
 
 To recover the data we should use the `parse()` method, as we do in the following code:
 
-```
-
-const localStorageTodos = localStorage.getItem('TODOS_V1');
+```javascript
+const localStorageTodos =
+	localStorage.getItem('TODOS_V1');
 let parsedTodos;
 
-    if(!localStorageTodos)
-    {
-    	localStorage.setItem('TODOS_V1', JSON.stringify([]));
-    	parsedTodos = [];
-    }
-    else
-    {
-    	parsedTodos = JSON.parse(localStorageTodos);
-    }
-
+if (!localStorageTodos) {
+	localStorage.setItem(
+		'TODOS_V1',
+		JSON.stringify([])
+	);
+	parsedTodos = [];
+} else {
+	parsedTodos = JSON.parse(localStorageTodos);
+}
 ```
 
-Fistly, we get the data from the localStorage using the `getItem()`method. If there is no data, we create the item using an empty array. On the other hand, if there is data we proceed to parse it.
+Firstly, we retrieve the data from `localStorage` using the `getItem()` method. If no data is found, we initialize the item with an empty array. If data is present, we proceed to parse it.
 
 ### Data Persistence
 
-It is important to notice that every change must be update the localStorage item and the React state, so we implemented this function:
+It is important to ensure that every change updates both the `localStorage` item and the React state. To achieve this, we implemented the following function:
 
-```
-
-const saveTodos = (newTodos) =>{
-setTodos(newTodos);
-localStorage.setItem('TODOS_V1', JSON.stringify(newTodos));
-}
-
+```javascript
+const saveTodos = (newTodos) => {
+	setTodos(newTodos);
+	localStorage.setItem(
+		'TODOS_V1',
+		JSON.stringify(newTodos)
+	);
+};
 ```
 
 <br>
@@ -859,7 +859,7 @@ localStorage.setItem('TODOS_V1', JSON.stringify(newTodos));
 
 ## [CUSTOM HOOKS]()
 
-In this class we are making an abstraction to be able to save data in the localStorage and update the React state. In the app component the code is:
+In this class, we create an abstraction to save data in `localStorage` and update the React state. In the App component, the code is:
 
 ```javascript
 function App() {
@@ -869,7 +869,7 @@ function App() {
 }
 ```
 
-The custom hook code is this:
+Custom hook code:
 
 ```javascript
 function useLocalStorage(itemName, initialValue) {
@@ -910,127 +910,141 @@ function useLocalStorage(itemName, initialValue) {
 }
 ```
 
-As we can see the custom hooks checks if the there is something in the localStorage, after that creates a new React state to store the parsedItem from the localStorage or the initialValue parameter.
+As we can see, the custom hook checks if there is data in `localStorage`. It then creates a new React state to store either the parsed item from `localStorage` or the `initialValue` parameter.
 
-Inside the custom hook a new function is defined, this function updates the React state and the localStorage information.
+Inside the custom hook, a function is defined to update both the React state and the `localStorage` data.
 
-Everytime the useLocalStorage() hook is called it will return a state and a method to update it.
+Every time the `useLocalStorage()` hook is called, it returns the state and a method to update it.
 
 <br>
 <br>
 
 ## [ORGANIZATION OF FOLDERS AND FILES]()
-There are lots of ways to organize the foldes and the files of a React project. The way recommended is to follow Feature-First Directories, this method is based on creating a folder to store a component and its other files related with it.
 
-The same happens with the custom hooks, every one must be on a independent file.
+There are many ways to organize the folders and files in a React project. The recommended approach is to follow Feature-First Directories. This method involves creating a folder to store a component and its related files.
+
+The same principle applies to custom hooks; each one should be in its own independent file.
 
 <br>
 <br>
 
 ## [REACT COMPONENTS ABSTRACTION]()
 
-It is very common to split a component into the business management and the UI. For example, the App component is being divided:
+It is common to split a component into business logic and UI components. For example, the App component can be divided into:
 
-```
-
+```javascript
 function App() {
-//- TODOS AND SEARCH VALUES
-const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
-const [searchValue, setSearchValue] = React.useState('');
+	//- TODOS AND SEARCH VALUES
+	const [todos, saveTodos] = useLocalStorage(
+		'TODOS_V1',
+		[]
+	);
+	const [searchValue, setSearchValue] =
+		React.useState('');
 
-    //- TODOS STATUS
-    const completedTodos = todos.filter((todo) => !!todo.completed).length;
-    const totalTodos = todos.length;
+	//- TODOS STATUS
+	const completedTodos = todos.filter(
+		(todo) => !!todo.completed
+	).length;
+	const totalTodos = todos.length;
 
-    // FILTERING
-    const searchedTodos = todos.filter((todo) => {
-    	const todoText = todo.text.toLowerCase();
-    	const searchText = searchValue.toLowerCase();
-    	return todoText.includes(searchText);
-    });
+	// FILTERING
+	const searchedTodos = todos.filter((todo) => {
+		const todoText = todo.text.toLowerCase();
+		const searchText = searchValue.toLowerCase();
+		return todoText.includes(searchText);
+	});
 
-    // COMPLETING TODOS
-    const completeTodo = (text) => {
-    	const newTodos = [...todos];
-    	const todoIndex = newTodos.findIndex((todo) => todo.text === text);
-    	newTodos[todoIndex].completed = true;
-    	saveTodos(newTodos);
-    };
+	// COMPLETING TODOS
+	const completeTodo = (text) => {
+		const newTodos = [...todos];
+		const todoIndex = newTodos.findIndex(
+			(todo) => todo.text === text
+		);
+		newTodos[todoIndex].completed = true;
+		saveTodos(newTodos);
+	};
 
-    // DELETING TODOS
-    const deleteTodo = (text) => {
-    	const newTodos = [...todos];
-    	const todoIndex = newTodos.findIndex((todo) => todo.text === text);
-    	newTodos.splice(todoIndex, 1);
-    	saveTodos(newTodos);
-    };
+	// DELETING TODOS
+	const deleteTodo = (text) => {
+		const newTodos = [...todos];
+		const todoIndex = newTodos.findIndex(
+			(todo) => todo.text === text
+		);
+		newTodos.splice(todoIndex, 1);
+		saveTodos(newTodos);
+	};
 
-    return(
-    	<AppUI
-    		completedTodos={completedTodos}
-    		totalTodos={totalTodos}
-    		searchValue={searchValue}
-    		setSearchValue={setSearchValue}
-    		searchedTodos={searchedTodos}
-    		completeTodo={completeTodo}
-    		deleteTodo={deleteTodo}
-    	/>
-    )
-
+	return (
+		<AppUI
+			completedTodos={completedTodos}
+			totalTodos={totalTodos}
+			searchValue={searchValue}
+			setSearchValue={setSearchValue}
+			searchedTodos={searchedTodos}
+			completeTodo={completeTodo}
+			deleteTodo={deleteTodo}
+		/>
+	);
 }
 
 export default App;
-
 ```
 
-```
-
+```javascript
 function AppUI({
-completedTodos,
-totalTodos,
-searchValue,
-setSearchValue,
-searchedTodos,
-completeTodo,
-deleteTodo,
+	completedTodos,
+	totalTodos,
+	searchValue,
+	setSearchValue,
+	searchedTodos,
+	completeTodo,
+	deleteTodo,
 }) {
-return (
-<>
-<TodoCounter completed={completedTodos} total={totalTodos} />
-<TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
-<TodoList>
-{searchedTodos.map((todo) => (
-<TodoItem
-key={todo.text}
-text={todo.text}
-completed={todo.completed}
-onComplete={() => completeTodo(todo.text)}
-onDelete={() => deleteTodo(todo.text)}
-/>
-))}
-</TodoList>
+	return (
+		<>
+			<TodoCounter
+				completed={completedTodos}
+				total={totalTodos}
+			/>
+			<TodoSearch
+				searchValue={searchValue}
+				setSearchValue={setSearchValue}
+			/>
+			<TodoList>
+				{searchedTodos.map((todo) => (
+					<TodoItem
+						key={todo.text}
+						text={todo.text}
+						completed={todo.completed}
+						onComplete={() =>
+							completeTodo(todo.text)
+						}
+						onDelete={() => deleteTodo(todo.text)}
+					/>
+				))}
+			</TodoList>
 
-    		<CreateTodoButton />
-    	</>
-    );
-
+			<CreateTodoButton />
+		</>
+	);
 }
 
 export { AppUI };
-
 ```
 
-As we can see all of the functionalities are passed as props to the UI.
+As we can see, all of the functionalities are passed as props to the UI component.
 
 <br>
 <br>
 
 ## [WHAT ARE THE REACT EFFECTS]()
-Sometimes there are process that must be executed once not in every component rendering or after certain circuntances.
 
-The `React.useEffect(() => {}, [])` allow us to set a function to be executed at the very first render and after every other component rendering.
+Sometimes there are processes that need to be executed only once, not on every component render, or after certain conditions are met.
 
-The second argument (optional) is an array where we can set the variables or the stated that will trigger the `useEffect`. It means it will be executed at the very first render and after a change in the state setted up.
+The `React.useEffect(() => {}, [])` hook allows us to specify a function to be executed on the very first render and after every subsequent render.
+
+The second argument (optional) is an array where we can specify the variables or states that will trigger the `useEffect`. This means it will be executed on the initial render and whenever there is a change in the specified state variables.
 
 ```javascript
 console.log('1');
@@ -1054,6 +1068,7 @@ console.log('Log 3');
 <br>
 
 ## [LOAD AND ERROR STATES]()
+
 In this class we applied the `useEffect()` to the TODOS loading, in order to get that the `useLocalStorage` hook code changed to:
 
 ```javascript
@@ -1120,30 +1135,30 @@ const {
 
 Notice that an object is returned, to change the properties name we have to use the `:`.
 
-The loading and error states are sent to `AppUI.js` using props:
+The loading and error states are sent to `AppUI` using props:
 
-```
-
+```javascript
 <TodoList>
-  {/* Loading and error states */}
-  {loading && <p>Cargando datos...</p>}
-  {error && <p>Hubo en error!</p>}
-  {(!loading && searchedTodos.todos === 0) && <p>Añade un TODO!</p>}
+	{/* Loading and error states */}
+	{loading && <p>Cargando datos...</p>}
+	{error && <p>Hubo en error!</p>}
+	{!loading && searchedTodos.todos === 0 && (
+		<p>Añade un TODO!</p>
+	)}
 
-{searchedTodos.map((todo) => (
-<TodoItem
-key={todo.text}
-text={todo.text}
-completed={todo.completed}
-onComplete={() => completeTodo(todo.text)}
-onDelete={() => deleteTodo(todo.text)}
-/>
-))}
+	{searchedTodos.map((todo) => (
+		<TodoItem
+			key={todo.text}
+			text={todo.text}
+			completed={todo.completed}
+			onComplete={() => completeTodo(todo.text)}
+			onDelete={() => deleteTodo(todo.text)}
+		/>
+	))}
 </TodoList>
-
 ```
 
-As we can see different messages are displayed based on the props
+As we can see different messages are displayed based on the props.
 
 <br>
 <br>
@@ -1152,61 +1167,69 @@ As we can see different messages are displayed based on the props
 
 Until this moment we have not been updating the loading and error states.
 
-```
-
+```javascript
 function useLocalStorage(itemName, initialValue) {
-// New React State where item represents the the localStorage or the initialValue
-const [item, setItem] = React.useState(initialValue);
-// loading and error states
-const [loading, setLoading] = React.useState(true);
-const [error, setError] = React.useState(false);
+	// New React State where item represents the the localStorage or the initialValue
+	const [item, setItem] =
+		React.useState(initialValue);
+	// loading and error states
+	const [loading, setLoading] =
+		React.useState(true);
+	const [error, setError] = React.useState(false);
 
-    // useEffect to load data from localStorage
-    React.useEffect(() => {
-    	setTimeout(() => {
-    		try {
-    			// Checking if the item already exists
-    			const localStorageItem = localStorage.getItem(itemName);
+	// useEffect to load data from localStorage
+	React.useEffect(() => {
+		setTimeout(() => {
+			try {
+				// Checking if the item already exists
+				const localStorageItem =
+					localStorage.getItem(itemName);
 
-    			let parsedItem;
+				let parsedItem;
 
-    			// If not the state and the local are set to an empty array
-    			if (!localStorageItem) {
-    				localStorage.setItem(itemName, JSON.stringify(initialValue));
-    				parsedItem = initialValue;
-    			} else {
-    				// If exists the item is parsed
-    				parsedItem = JSON.parse(localStorageItem);
-    				setItem(parsedItem);
-    			}
+				// If not the state and the local are set to an empty array
+				if (!localStorageItem) {
+					localStorage.setItem(
+						itemName,
+						JSON.stringify(initialValue)
+					);
+					parsedItem = initialValue;
+				} else {
+					// If exists the item is parsed
+					parsedItem = JSON.parse(
+						localStorageItem
+					);
+					setItem(parsedItem);
+				}
 
-    			// Change loading state after finishing process
-    			setLoading(false);
-    		} catch (error) {
-    			setLoading(false);
-    			setError(true);
-    			console.log(error);
-    		}
-    	}, 2000);
-    }, []);
+				// Change loading state after finishing process
+				setLoading(false);
+			} catch (error) {
+				setLoading(false);
+				setError(true);
+				console.log(error);
+			}
+		}, 2000);
+	}, []);
 
-    // UPDATE & SAVE TODOS
-    // Function to update the localStorage and the React state
-    const saveItem = (newItem) => {
-    	localStorage.setItem(itemName, JSON.stringify(newItem));
-    	setItem(newItem);
-    };
+	// UPDATE & SAVE TODOS
+	// Function to update the localStorage and the React state
+	const saveItem = (newItem) => {
+		localStorage.setItem(
+			itemName,
+			JSON.stringify(newItem)
+		);
+		setItem(newItem);
+	};
 
-    // Exporting the React state, the function to update it, and the loading and error states
-    return {
-    	item,
-    	saveItem,
-    	loading,
-    	error,
-    };
-
+	// Exporting the React state, the function to update it, and the loading and error states
+	return {
+		item,
+		saveItem,
+		loading,
+		error,
+	};
 }
-
 ```
 
 Notice that there are few changes in the code above:
@@ -1225,24 +1248,21 @@ The loading skeletons are like shadows that indicate to the user the data loadin
 
 To get this, another component with his particular css file is created:
 
-```
-
+```javascript
 import React from 'react';
 import './TodosLoading.css';
 
 function TodosLoading() {
-return (
-
-<div className='LoadingTodo-container'>
-<span className='LoadingTodo-completeIcon'></span>
-<span className='LoadingTodo-text'></span>
-<span className='LoadingTodo-deleteIcon'></span>
-</div>
-);
+	return (
+		<div className='LoadingTodo-container'>
+			<span className='LoadingTodo-completeIcon'></span>
+			<span className='LoadingTodo-text'></span>
+			<span className='LoadingTodo-deleteIcon'></span>
+		</div>
+	);
 }
 
 export { TodosLoading };
-
 ```
 
 <br>
