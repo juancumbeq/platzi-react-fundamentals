@@ -80,6 +80,8 @@ You don't have to ever use eject. The curated feature set is suitable for small 
 - [LAYOUT WITH REACT.JS](#layout-with-reactjs)
 
   - [WHAT IS A COMPONENT](#what-is-a-component)
+    - [Functional Components](#functional-components)
+    - [Class Components](#class-components)
   - [HOW THE COMPONENTS COMUNICATE: PROPS AND ATTRIBUTES](#how-the-components-comunicate-props-and-attributes)
     - [React Fragment](#react-fragment)
     - [Children](#children)
@@ -129,6 +131,7 @@ You don't have to ever use eject. The curated feature set is suitable for small 
   - [REACT CONTEXT INSIDE REACT PORTALS](#react-context-inside-react-portals)
 
 - [DEPLOY](#deploy)
+
   - [GITHUB PAGES](#github-pages)
     - [`npm run build`](#npm-run-build-1)
     - [`gh-pages` BRANCH](#gh-pages-branch)
@@ -159,69 +162,39 @@ A React component is a fundamental building block of a React application. It is 
 
 React components come in two main types: functional components and class components.
 
-Functional Components
+### Functional Components
+
 Functional components are the simpler and more modern way to create components. They are JavaScript functions that return React elements (which are the objects that describe what you want to see on the screen).
 
 Here's an example of a functional component:
 
-```
+```javascript
 import React from 'react';
 
 function Greeting(props) {
-  return <h1>Hello, {props.name}!</h1>;
+	return <h1>Hello, {props.name}!</h1>;
 }
-```
 
 export default Greeting;
-In this example, Greeting is a functional component that takes props (short for properties) as an argument and returns a JSX element (<h1>Hello, {props.name}!</h1>).
+```
 
-Class Components
+### Class Components
+
 Class components were the traditional way to create components before the introduction of Hooks in React 16.8. They are ES6 classes that extend from React.Component.
 
 Here's an example of a class component:
 
-```
+```javascript
 import React, { Component } from 'react';
 
 class Greeting extends Component {
-  render() {
-    return <h1>Hello, {this.props.name}!</h1>;
-  }
+	render() {
+		return <h1>Hello, {this.props.name}!</h1>;
+	}
 }
-```
 
 export default Greeting;
-In this example, Greeting is a class component that extends React.Component. It has a render method that returns a JSX element.
-
-Key Characteristics of React Components
-Reusability: Components can be reused across different parts of an application, making it easier to build and maintain large-scale applications.
-Composability: Components can be composed together to build complex UIs. A component can contain other components, creating a tree-like structure.
-Isolation: Each component operates independently, encapsulating its logic and styles. This isolation makes it easier to understand and debug the code.
-Props: Components can receive inputs called props. Props are read-only data passed from a parent component to a child component.
-State: Components can maintain their own local state. Functional components use the useState hook to manage state, while class components use this.state and this.setState.
-Lifecycle Methods: Class components have lifecycle methods like componentDidMount, componentDidUpdate, and componentWillUnmount. Functional components can use hooks like useEffect to handle side effects and lifecycle events.
-Example Usage of Components
-Here's an example of how components can be used together:
-
 ```
-// App.js
-import React from 'react';
-import Greeting from './Greeting';
-
-function App() {
-return (
-
-<div>
-<Greeting name="Alice" />
-<Greeting name="Bob" />
-<Greeting name="Charlie" />
-</div>
-);
-}
-```
-
-export default App;
-In this example, the App component uses the Greeting component three times, passing different name props to each instance. This demonstrates the reusability and composability of React components.
 
 <br>
 <br>
@@ -540,22 +513,32 @@ Notice that both are transformed to lowercase() to find all ocurrencies.
 
 ```javascript
 function App() {
-	const [todos, setTodos] = React.useState(defaultTodos);
-	const [searchValue, setSearchValue] = React.useState('');
+	const [todos, setTodos] =
+		React.useState(defaultTodos);
+	const [searchValue, setSearchValue] =
+		React.useState('');
 
-	const completed = todos.filter((todo) => !!todo.completed).length;
+	const completed = todos.filter(
+		(todo) => !!todo.completed
+	).length;
 	const totalTodos = todos.length;
 
 	const searchedTodos = todos.filter((todo) => {
-    const todoText = todo.text.toLowerCase();
-    const searchText = searchValue.toLowerCase();
+		const todoText = todo.text.toLowerCase();
+		const searchText = searchValue.toLowerCase();
 		return todoText.includes(searchText);
 	});
 
 	return (
 		<React.Fragment>
-			<TodoCounter completed={completed} total={totalTodos} />
-			<TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
+			<TodoCounter
+				completed={completed}
+				total={totalTodos}
+			/>
+			<TodoSearch
+				searchValue={searchValue}
+				setSearchValue={setSearchValue}
+			/>
 			<TodoList>
 				{searchedTodos.map((todo) => (
 					<TodoItem
@@ -592,10 +575,12 @@ The onClick event executes a function received as a prop. So the full logic is h
 
 ```javascript
 const completeTodos = (text) => {
-  const newTodos = [...todos];
-  const todoIndex = newTodos.findIndex((todo) => todo.text === text);
-  newTodos[todoIndex].completed = true;
-  setTodos(newTodos);
+	const newTodos = [...todos];
+	const todoIndex = newTodos.findIndex(
+		(todo) => todo.text === text
+	);
+	newTodos[todoIndex].completed = true;
+	setTodos(newTodos);
 };
 ```
 
@@ -605,11 +590,11 @@ In the xml code we have:
 
 ```javascript
 <TodoItem
-  key={todo.text}
-  text={todo.text}
-  completed={todo.completed}
-  onComplete={() => completeTodos(todo.text)}
-  onDelete={() => deleteTodos(todo.text)}
+	key={todo.text}
+	text={todo.text}
+	completed={todo.completed}
+	onComplete={() => completeTodos(todo.text)}
+	onDelete={() => deleteTodos(todo.text)}
 />
 ```
 
@@ -620,10 +605,12 @@ The deleting process is identical, with the difference that the splice method is
 
 ```javascript
 const deleteTodos = (text) => {
-  const newTodos = [...todos];
-  const todoIndex = newTodos.findIndex((todo) => todo.text === text);
-  newTodos.splice(todoIndex, 1);
-  setTodos(newTodos);
+	const newTodos = [...todos];
+	const todoIndex = newTodos.findIndex(
+		(todo) => todo.text === text
+	);
+	newTodos.splice(todoIndex, 1);
+	setTodos(newTodos);
 };
 ```
 
@@ -644,15 +631,25 @@ function TodoItem(props) {
 	return (
 		<li className='TodoItem'>
 			<CompleteIcon
-				className={`Icon Icon-check ${props.completed && 'Icon-check--active'}`}
+				className={`Icon Icon-check ${
+					props.completed && 'Icon-check--active'
+				}`}
 				onClick={props.onComplete}
 			/>
 
-			<p className={`TodoItem-p ${props.completed && 'TodoItem-p--complete'}`}>
+			<p
+				className={`TodoItem-p ${
+					props.completed &&
+					'TodoItem-p--complete'
+				}`}
+			>
 				{props.text}
 			</p>
 
-			<DeleteIcon className='Icon Icon-delete' onClick={props.onDelete} />
+			<DeleteIcon
+				className='Icon Icon-delete'
+				onClick={props.onDelete}
+			/>
 		</li>
 	);
 }
@@ -693,7 +690,9 @@ const iconTypes = {
 
 function TodoIcon({ type }) {
 	return (
-		<span className={`Icon Icon-svg Icon-${type}`}>
+		<span
+			className={`Icon Icon-svg Icon-${type}`}
+		>
 			{iconTypes[type]}
 		</span>
 	);
@@ -838,34 +837,41 @@ function App() {
 The custom hook code is this:
 
 ```javascript
-function useLocalStorage(itemName, initialValue){
-// Checking if the item already exists
-const localStorageItem = localStorage.getItem(itemName);
+function useLocalStorage(itemName, initialValue) {
+	// Checking if the item already exists
+	const localStorageItem =
+		localStorage.getItem(itemName);
 
-    let parsedItem;
+	let parsedItem;
 
-    // If not the state and the local are set to an empty array
-    if(!localStorageItem){
-    	localStorage.setItem(itemName, JSON.stringify(initialValue));
-    	parsedItem = initialValue;
-    }
-    else{
-    	// If exists the item is parsed
-    	parsedItem = JSON.parse(localStorageItem);
-    }
+	// If not the state and the local are set to an empty array
+	if (!localStorageItem) {
+		localStorage.setItem(
+			itemName,
+			JSON.stringify(initialValue)
+		);
+		parsedItem = initialValue;
+	} else {
+		// If exists the item is parsed
+		parsedItem = JSON.parse(localStorageItem);
+	}
 
-    // New React State where item represents the the localStorage or the initialValue
-    const [item, setItem] = React.useState(parsedItem);
+	// New React State where item represents the the localStorage or the initialValue
+	const [item, setItem] =
+		React.useState(parsedItem);
 
-    // UPDATE & SAVE TODOS
-    // Function to update the localStorage and the React state
-    const saveItem = (newItem) => {
-    	localStorage.setItem(itemName, JSON.stringify(newItem));
-    	setItem(newItem);
-    }
+	// UPDATE & SAVE TODOS
+	// Function to update the localStorage and the React state
+	const saveItem = (newItem) => {
+		localStorage.setItem(
+			itemName,
+			JSON.stringify(newItem)
+		);
+		setItem(newItem);
+	};
 
-    // Exporting the React state and the function to update it
-    return [item, saveItem];
+	// Exporting the React state and the function to update it
+	return [item, saveItem];
 }
 ```
 
@@ -995,15 +1001,15 @@ The second argument (optional) is an array where we can set the variables or the
 console.log('1');
 
 React.useEffect(() => {
-console.log('Loooog 2');
+	console.log('Loooog 2');
 });
 
 React.useEffect(() => {
-console.log('Loooog 2');
+	console.log('Loooog 2');
 }, []);
 
 React.useEffect(() => {
-  console.log('Loooog 2');
+	console.log('Loooog 2');
 }, [totalTodos]);
 
 console.log('Log 3');
@@ -1017,43 +1023,52 @@ In this class we applied the `useEffect()` to the TODOS loading, in order to get
 
 ```javascript
 function useLocalStorage(itemName, initialValue) {
-// New React State where item represents the the localStorage or the initialValue
-const [item, setItem] = React.useState(initialValue);
-// loading and error states
-const [loading, setLoading] = React.useState(true);
-const [error, setError] = React.useState(false);
+	// New React State where item represents the the localStorage or the initialValue
+	const [item, setItem] =
+		React.useState(initialValue);
+	// loading and error states
+	const [loading, setLoading] =
+		React.useState(true);
+	const [error, setError] = React.useState(false);
 
-    // useEffect to load data from localStorage
-    React.useEffect(() => {
-    	// Checking if the item already exists
-    	const localStorageItem = localStorage.getItem(itemName);
+	// useEffect to load data from localStorage
+	React.useEffect(() => {
+		// Checking if the item already exists
+		const localStorageItem =
+			localStorage.getItem(itemName);
 
-    	let parsedItem;
+		let parsedItem;
 
-    	// If not the state and the local are set to an empty array
-    	if (!localStorageItem) {
-    		localStorage.setItem(itemName, JSON.stringify(initialValue));
-    		parsedItem = initialValue;
-    	} else {
-    		// If exists the item is parsed
-    		parsedItem = JSON.parse(localStorageItem);
-    	}
-    });
+		// If not the state and the local are set to an empty array
+		if (!localStorageItem) {
+			localStorage.setItem(
+				itemName,
+				JSON.stringify(initialValue)
+			);
+			parsedItem = initialValue;
+		} else {
+			// If exists the item is parsed
+			parsedItem = JSON.parse(localStorageItem);
+		}
+	});
 
-    // UPDATE & SAVE TODOS
-    // Function to update the localStorage and the React state
-    const saveItem = (newItem) => {
-    	localStorage.setItem(itemName, JSON.stringify(newItem));
-    	setItem(newItem);
-    };
+	// UPDATE & SAVE TODOS
+	// Function to update the localStorage and the React state
+	const saveItem = (newItem) => {
+		localStorage.setItem(
+			itemName,
+			JSON.stringify(newItem)
+		);
+		setItem(newItem);
+	};
 
-    // Exporting the React state, the function to update it, and the loading and error states
-    return {
-    	item,
-    	saveItem,
-    	loading,
-    	error,
-    };
+	// Exporting the React state, the function to update it, and the loading and error states
+	return {
+		item,
+		saveItem,
+		loading,
+		error,
+	};
 }
 ```
 
@@ -1061,12 +1076,11 @@ As we can see we are returning the loading a error states, in this case to the `
 
 ```javascript
 const {
-item: todos,
-saveItem: saveTodos,
-loading,
-error,
+	item: todos,
+	saveItem: saveTodos,
+	loading,
+	error,
 } = useLocalStorage('TODOS_V1', []);
-
 ```
 
 Notice that an object is returned, to change the properties name we have to use the `:`.
