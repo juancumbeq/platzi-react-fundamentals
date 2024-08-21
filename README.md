@@ -92,6 +92,7 @@ You don't have to ever use eject. The curated feature set is suitable for small 
     - [Dynamic classes](#dynamic-classes)
 
 - [INTERACTION WITH REACT.JS](#interaction-with-reactjs)
+
   - [REACT EVENTS: ONCLICK, ONCHANGE](#react-events-onclick-onchange)
   - [WHAT IS THE STATE?](#what-is-the-state)
   - [COUNTING TODOS: SHARING STATE BETWEEN COMPONENTS](#counting-todos-sharing-state-between-components)
@@ -102,6 +103,7 @@ You don't have to ever use eject. The curated feature set is suitable for small 
     - [Deleting](#deleting)
 
 - [CUSTOM ICON LIBRARY](#custom-icon-library)
+
   - [ICONS IN REACT: LIBRARIES AND SVG](#icons-in-react-libraries-and-svg)
   - [ICONS WITH DYNAMICS COLORS](#icons-with-dynamics-colors)
     - [`onClick`](#onclick)
@@ -112,17 +114,25 @@ You don't have to ever use eject. The curated feature set is suitable for small 
   - [LOCAL STORAGE WITH REACT.JS](#local-storage-with-reactjs)
     - [Data Persistence](#data-persistence)
   - [CUSTOM HOOKS](#custom-hooks)
+  - [ORGANIZATION OF FOLDERS AND FILES](#organization-of-folders-and-files)
   - [REACT COMPONENTS ABSTRACTION](#react-components-abstraction)
+  - [WHAT ARE THE REACT EFFECTS](#what-are-the-react-effects)
+  - [LOAD AND ERROR STATES](#load-and-error-states)
   - [UPDATING STATES USING `useEffect`](#updating-states-using-useeffect)
   - [LOADING SKELETONS](#loading-skeletons)
+  - [REACT CONTEXT](#react-context)
     - [`createContext()`](#createcontext)
     - [Render Functions](#render-functions)
   - [`useContext()`](#usecontext)
+  - [REACT PORTALS](#react-portals)
+  - [REACT FORMS LAYOUT](#react-forms-layout)
+  - [REACT CONTEXT INSIDE REACT PORTALS](#react-context-inside-react-portals)
 
 - [DEPLOY](#deploy)
-
-  - [`npm run build`](#npm-run-build-1)
-  - [CUSTOM COMMANDS](#custom-commands)
+  - [GITHUB PAGES](#github-pages)
+    - [`npm run build`](#npm-run-build-1)
+    - [`gh-pages` BRANCH](#gh-pages-branch)
+    - [CUSTOM COMMANDS](#custom-commands)
 
 - [REACT: #UNDERTHEHOOD](#react-underthehood)
 
@@ -131,7 +141,9 @@ You don't have to ever use eject. The curated feature set is suitable for small 
 
 - [CREATING REACT PROYECTS FROM SCRATCH](#creating-react-proyects-from-scratch)
 
-  - [CRATE REACT APP](#crate-react-app)
+  - [CREATE REACT APP](#crate-react-app)
+  - [NEXT.JS](#nextjs)
+  - [VITE](#vite)
 
 - [AUTHOR](#author)
 
@@ -526,7 +538,7 @@ To do the filtering process it is necessary to apply the `filter()` method to th
 
 Notice that both are transformed to lowercase() to find all ocurrencies.
 
-```
+```javascript
 function App() {
 	const [todos, setTodos] = React.useState(defaultTodos);
 	const [searchValue, setSearchValue] = React.useState('');
@@ -569,7 +581,7 @@ function App() {
 
 The todoItem component code is the following:
 
-```
+```javascript
 <span
   className={`Icon Icon-check ${props.completed && "Icon-check--active"}`}
   onClick={props.onComplete}
@@ -578,7 +590,7 @@ The todoItem component code is the following:
 
 The onClick event executes a function received as a prop. So the full logic is handled in the App component, where the code is:
 
-```
+```javascript
 const completeTodos = (text) => {
   const newTodos = [...todos];
   const todoIndex = newTodos.findIndex((todo) => todo.text === text);
@@ -591,7 +603,7 @@ In the code above the function completeTodos, receive a text parameter. A new ar
 
 In the xml code we have:
 
-```
+```javascript
 <TodoItem
   key={todo.text}
   text={todo.text}
@@ -606,7 +618,7 @@ To prevent a function from executing immediately upon the initial rendering, it'
 ### Deleting
 The deleting process is identical, with the difference that the splice method is used to delete the todo selected.
 
-```
+```javascript
 const deleteTodos = (text) => {
   const newTodos = [...todos];
   const todoIndex = newTodos.findIndex((todo) => todo.text === text);
@@ -627,7 +639,7 @@ Until this moment the project icons have been letters, but we will change it to 
 
 Inside the todoItem component, the span tag is replaced by custom components:
 
-```
+```javascript
 function TodoItem(props) {
 	return (
 		<li className='TodoItem'>
@@ -648,7 +660,7 @@ function TodoItem(props) {
 
 The DeleteIcon and the CompleteIcon code is the following:
 
-```
+```javascript
 import React from 'react';
 import { TodoIcon } from './TodoIcon';
 
@@ -657,8 +669,6 @@ function DeleteIcon() {
 }
 
 export { DeleteIcon };
-
-
 
 import React from 'react';
 import { TodoIcon } from './TodoIcon';
@@ -672,14 +682,14 @@ export { CompleteIcon };
 
 As we can see in the previous snipet there are another component called TodoIcon, this component imports the svg files as components and based on what receives as a prop returns a check icon or a delete icon:
 
-```
+```javascript
 import { ReactComponent as CheckSVG } from '../resources/check.svg';
 import { ReactComponent as DeleteSVG } from '../resources/delete.svg';
 
 const iconTypes = {
-  "check": <CheckSVG/>,
-  "delete": <DeleteSVG/>,
-}
+	check: <CheckSVG />,
+	delete: <DeleteSVG />,
+};
 
 function TodoIcon({ type }) {
 	return (
@@ -710,8 +720,8 @@ delete: (color) => <DeleteSVG className='Icon-svg' fill={color} />,
 <!-- prettier-ignore-start -->
 function TodoIcon({ type, color, onClick }) {
   return (
-    <span 
-      className={`Icon-container Icon-container-${type}`} 
+    <span
+      className={`Icon-container Icon-container-${type}`}
       onClick={onClick}>
       {iconTypes[type](color)}
     </span>
@@ -723,24 +733,27 @@ export { TodoIcon };
 ```
 
 On the other hand, to create the hover effect we defined it in the css file, however, now we got a SVG file so, we need to make use of the `fill` property:
-```
 
+```css
 .Icon-container-check:hover .Icon-svg {
-fill: green;
+	fill: green;
 }
 
 .Icon-container-delete:hover .Icon-svg {
-fill: red;
+	fill: red;
 }
 ```
 
 ### SVG fill property
+
 - SVG Component: When you import an SVG file as a React component, you can pass props to it just like any other React component.
 
 - `fill` Attribute: The `fill` attribute in an SVG defines the color of the shapes inside the SVG. By passing the `fill` prop to the CheckSVG and DeleteSVG components, you dynamically set the color of the SVG content.
 
   ### `onClick`
-To be able to give functionality to the icons it is necessary to pass the props through multiple components until get to the TodoIcon, where it can execute the props passed inside an onClick event
+
+  To be able to give functionality to the icons it is necessary to pass the props through multiple components until get to the TodoIcon, where it can execute the props passed inside an onClick event
+
 ```
 
 function TodoIcon({ type, color, onClick }) {
@@ -760,16 +773,21 @@ onClick={onClick}>
 <br>
 
 # ADVANCED TOOLS: SCALABILITY, ORGANIZATION AND PERSISTENCE
-  ## [LOCAL STORAGE WITH REACT.JS]()
+
+## [LOCAL STORAGE WITH REACT.JS]()
+
 `Localstorage`allow us to save data in the browser, so if the user close the webpage or even close the browser the data will remain. But there are some specifications to make it work perfectly. The data stored in the localStorage must be a string so we must fo the following:
+
 ```
 
 localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
 
 ```
+
 In this case we are converting the TODOS array into a string by using the `stringify()` method.
 
 To recover the data we should use the `parse()` method, as we do in the following code:
+
 ```
 
 const localStorageTodos = localStorage.getItem('TODOS_V1');
@@ -786,10 +804,13 @@ let parsedTodos;
     }
 
 ```
+
 Fistly, we get the data from the localStorage using the `getItem()`method. If there is no data, we create the item using an empty array. On the other hand, if there is data we proceed to parse it.
 
-  ### Data Persistence
+### Data Persistence
+
 It is important to notice that every change must be update the localStorage item and the React state, so we implemented this function:
+
 ```
 
 const saveTodos = (newTodos) =>{
@@ -802,21 +823,21 @@ localStorage.setItem('TODOS_V1', JSON.stringify(newTodos));
 <br>
 <br>
 
-  ## [CUSTOM HOOKS]()
+## [CUSTOM HOOKS]()
+
 In this class we are making an abstraction to be able to save data in the localStorage and update the React state. In the app component the code is:
-```
 
+```javascript
 function App() {
-//- TODOS AND SEARCH VALUES
-const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
-...
+  //- TODOS AND SEARCH VALUES
+  const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
+  ...
 }
-
 ```
 
 The custom hook code is this:
-```
 
+```javascript
 function useLocalStorage(itemName, initialValue){
 // Checking if the item already exists
 const localStorageItem = localStorage.getItem(itemName);
@@ -845,9 +866,7 @@ const localStorageItem = localStorage.getItem(itemName);
 
     // Exporting the React state and the function to update it
     return [item, saveItem];
-
 }
-
 ```
 
 As we can see the custom hooks checks if the there is something in the localStorage, after that creates a new React state to store the parsedItem from the localStorage or the initialValue parameter.
@@ -859,7 +878,7 @@ Everytime the useLocalStorage() hook is called it will return a state and a meth
 <br>
 <br>
 
-  ## [ORGANIZATION OF FOLDERS AND FILES]()
+## [ORGANIZATION OF FOLDERS AND FILES]()
 There are lots of ways to organize the foldes and the files of a React project. The way recommended is to follow Feature-First Directories, this method is based on creating a folder to store a component and its other files related with it.
 
 The same happens with the custom hooks, every one must be on a independent file.
@@ -867,8 +886,10 @@ The same happens with the custom hooks, every one must be on a independent file.
 <br>
 <br>
 
-  ## [REACT COMPONENTS ABSTRACTION]()
+## [REACT COMPONENTS ABSTRACTION]()
+
 It is very common to split a component into the business management and the UI. For example, the App component is being divided:
+
 ```
 
 function App() {
@@ -963,15 +984,15 @@ As we can see all of the functionalities are passed as props to the UI.
 <br>
 <br>
 
-  ## [WHAT ARE THE REACT EFFECTS]()
+## [WHAT ARE THE REACT EFFECTS]()
 Sometimes there are process that must be executed once not in every component rendering or after certain circuntances.
 
 The `React.useEffect(() => {}, [])` allow us to set a function to be executed at the very first render and after every other component rendering.
 
 The second argument (optional) is an array where we can set the variables or the stated that will trigger the `useEffect`. It means it will be executed at the very first render and after a change in the state setted up.
-```
 
-    console.log('1');
+```javascript
+console.log('1');
 
 React.useEffect(() => {
 console.log('Loooog 2');
@@ -981,21 +1002,20 @@ React.useEffect(() => {
 console.log('Loooog 2');
 }, []);
 
-    React.useEffect(() => {
-    	console.log('Loooog 2');
-    }, [totalTodos]);
+React.useEffect(() => {
+  console.log('Loooog 2');
+}, [totalTodos]);
 
-    console.log('Log 3');
-
+console.log('Log 3');
 ```
 
 <br>
 <br>
 
-  ## [LOAD AND ERROR STATES]()
+## [LOAD AND ERROR STATES]()
 In this class we applied the `useEffect()` to the TODOS loading, in order to get that the `useLocalStorage` hook code changed to:
-```
 
+```javascript
 function useLocalStorage(itemName, initialValue) {
 // New React State where item represents the the localStorage or the initialValue
 const [item, setItem] = React.useState(initialValue);
@@ -1034,14 +1054,12 @@ const [error, setError] = React.useState(false);
     	loading,
     	error,
     };
-
 }
-
 ```
 
 As we can see we are returning the loading a error states, in this case to the `App.js` file:
-```
 
+```javascript
 const {
 item: todos,
 saveItem: saveTodos,
@@ -1054,6 +1072,7 @@ error,
 Notice that an object is returned, to change the properties name we have to use the `:`.
 
 The loading and error states are sent to `AppUI.js` using props:
+
 ```
 
 <TodoList>
@@ -1080,7 +1099,8 @@ As we can see different messages are displayed based on the props
 <br>
 <br>
 
-  ## [UPDATING STATES USING `useEffect`]()
+## [UPDATING STATES USING `useEffect`]()
+
 Until this moment we have not been updating the loading and error states.
 
 ```
@@ -1142,18 +1162,20 @@ const [error, setError] = React.useState(false);
 
 Notice that there are few changes in the code above:
 
-  1. The code is embed inside a try-catch block
-  2. The state setters are setted up in case of finishing the data loading or an error occurence.
-  3. The whole `useEffect`code is embed inside a `setTimeout` function to emulate the time passed in data loading.
-  4. It is necessary to define an `[]` empty array to execute the `useEffect` at the very first render.
+1. The code is embed inside a try-catch block
+2. The state setters are setted up in case of finishing the data loading or an error occurence.
+3. The whole `useEffect`code is embed inside a `setTimeout` function to emulate the time passed in data loading.
+4. It is necessary to define an `[]` empty array to execute the `useEffect` at the very first render.
 
 <br>
 <br>
 
-  ## [LOADING SKELETONS]()
+## [LOADING SKELETONS]()
+
 The loading skeletons are like shadows that indicate to the user the data loading.
 
 To get this, another component with his particular css file is created:
+
 ```
 
 import React from 'react';
@@ -1177,10 +1199,11 @@ export { TodosLoading };
 <br>
 <br>
 
-  ## [REACT CONTEXT]()
+## [REACT CONTEXT]()
 Prop drilling in React refers to the process of passing data from a parent component down through multiple layers of nested child components via props, even when only the deepest child needs the data. This often happens when a value or function from a top-level component needs to be accessed by a deeply nested child component.
 
- ### `createContext()`
+### `createContext()`
+
 ```
 
 import React from 'react';
@@ -1256,6 +1279,7 @@ React.useState('');
 export { TodoContext, TodoProvider };
 
 ```
+
 All the code we used to have in the App component is moved to the TodoContext component, who is going to provide all the todos data by using the custom hooks.
 
 In the code above the context is created using `createContext()`. But also a Provider function/component must be created, this component is in charge to provide the specific data required by the components.
@@ -1264,7 +1288,8 @@ The TodoProvider component receives another component as an argument (children),
 
 It is important to notice that in the return there is a attribute called value, this attribute represents an object with all the methods and information managed by the TodoProvider, by this way, any component wrapped can access the information/method required.
 
-###	Render Functions
+### Render Functions
+
 ```
 
 function AppUI() {
@@ -1327,7 +1352,9 @@ After the context is created, it is necessary to use a Consumer tag, which is go
 <br>
 
 ## [`useContext()`]()
+
 `useContext()` is the React hook that allow us to use a React context created previously, inside a component.
+
 ```
 
 import React from 'react';
@@ -1358,16 +1385,14 @@ export { TodoSearch };
 
 In the code above the Context is imported, so by `useContext()` we can access any method or value returned by this context inside our component.
 
-This method has several advantages:
-	-	Do not require to use the <TodoContext.Consumer>
-	- Do not requiere to use render functions
-	- The code remains much clean
+This method has several advantages: - Do not require to use the <TodoContext.Consumer> - Do not requiere to use render functions - The code remains much clean
 
 <br>
 <br>
 
 ## [REACT PORTALS]()
 The React Portals are like doors allowing us to move a component to another HTML node. For example, it is very common to render the full application in an HTML node called App. The React portals can move a component and render it inside another component called, for example, modal.
+
 ```
 
 import React from 'react';
@@ -1392,6 +1417,7 @@ In the code above, the `createPortal()` method receives two parameter, one is th
 
 ## [REACT FORMS LAYOUT]()
 Inside the Modal component there is a form inserted. This form appears or disappears everytime the `+` icon is clicked.
+
 ```
 
 import React from 'react';
@@ -1435,7 +1461,8 @@ This reloading means the data collected in the form is going the be sent to a UR
 <br>
 <br>
 
-## [React Context inside React Portals]()
+## [REACT CONTEXT INSIDE REACT PORTALS]()
+
 ```
 
 import React from 'react';
@@ -1506,11 +1533,15 @@ In the code above we are setting up the different functions to manage the data c
 <br>
 
 # DEPLOY
+
 ## [GITHUB PAGES]()
+
 ### `npm run build`
+
 Help us to create a production version of our application. This new version is based on static files like html or js, without needing a node.js server.
 
 It is important to edtit the package-json properly, because based on the homepage property the build command will set the different routes inside the html file.
+
 ```
 
 "homepage": "https://juancumbeq.github.io/platzi-react-fundamentals"
@@ -1523,22 +1554,26 @@ gh-pages is a tool that allow us to create another branch with only the build co
 `npm i --save-dev gh-pages` is the command to install this tool.
 
 ### CUSTOM COMMANDS
+
 ```
 
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
 
 ```
+
 With the predeploy command we are creating the build directory, on the other hand, with the deploy command we are using gh-pages to deploy the content of our build folder directly into the github server.
 
 <br>
 <br>
 
 # REACT: #UNDERTHEHOOD
+
 ## [DIFFERENCES BETWEEN REACT.JS VERSIONS]()
 It is important to know and master how to change between the different React versions.
 
 ### REACT 18
+
 ```
 
 import React from 'react';
@@ -1555,6 +1590,7 @@ root.render(<App />);
 ```
 
 ### REACT 17
+
 ```
 
 import React from 'react';
@@ -1571,7 +1607,9 @@ render(<App tab='home' />, root);
 <br>
 
 # CREATING REACT PROYECTS FROM SCRATCH
-## [CRATE REACT APP]()
+
+## [CREATE REACT APP]()
+
 `npx create-react-app app-name` is the most popular command to create a React app from scratch.
 
 <br>
@@ -1590,5 +1628,9 @@ Next.js is a framework based on React.js
 <br>
 
 # AUTHOR
-This project was developed by *Juan Cumbe*. If you have any questions or suggestions about the project, feel free to contact me via [e-mail](mailto:hello@juancumbe.com) or my [Linkedin](https://www.linkedin.com/in/juancumbeq/) profile.
+
+This project was developed by _Juan Cumbe_. If you have any questions or suggestions about the project, feel free to contact me via [e-mail](mailto:hello@juancumbe.com) or my [Linkedin](https://www.linkedin.com/in/juancumbeq/) profile.
+
+```
+
 ```
