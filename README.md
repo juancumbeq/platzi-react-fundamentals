@@ -1,7 +1,7 @@
 # React.js Fundamentals Course
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Course-Finished%20-brightgreen"/>
+  <img src="https://img.shields.io/badge/Finished%20-brightgreen"/>
 </p>
 
 <br>
