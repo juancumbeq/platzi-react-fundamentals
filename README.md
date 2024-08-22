@@ -1234,19 +1234,19 @@ function useLocalStorage(itemName, initialValue) {
 
 Notice that there are few changes in the code above:
 
-1. The code is embed inside a try-catch block
-2. The state setters are setted up in case of finishing the data loading or an error occurence.
-3. The whole `useEffect`code is embed inside a `setTimeout` function to emulate the time passed in data loading.
-4. It is necessary to define an `[]` empty array to execute the `useEffect` at the very first render.
+1. The code is enclosed in a `try-catch` block
+2. The state setters are configured to handle data loading completion or errors.
+3. The entire `useEffect` code is wrapped inside a `setTimeout` function to emulate the time taken in data loading.
+4. It is necessary to define an `[]` empty array to execute the `useEffect` only on the initial render.
 
 <br>
 <br>
 
 ## [LOADING SKELETONS]()
 
-The loading skeletons are like shadows that indicate to the user the data loading.
+Loading skeletons serve as placeholders to indicate to the user that data is being loaded.
 
-To get this, another component with his particular css file is created:
+To achieve this, another component with its own CSS file is created:
 
 ```javascript
 import React from 'react';
@@ -1269,153 +1269,148 @@ export { TodosLoading };
 <br>
 
 ## [REACT CONTEXT]()
+
 Prop drilling in React refers to the process of passing data from a parent component down through multiple layers of nested child components via props, even when only the deepest child needs the data. This often happens when a value or function from a top-level component needs to be accessed by a deeply nested child component.
 
 ### `createContext()`
 
-```
-
+```javascript
 import React from 'react';
 import { useLocalStorage } from './useLocalStorage';
 
 const TodoContext = React.createContext();
 
 function TodoProvider({ children }) {
-//- TODOS AND SEARCH VALUES
-const {
-item: todos,
-saveItem: saveTodos,
-loading,
-error,
-} = useLocalStorage('TODOS_V1', []);
-const [searchValue, setSearchValue] =
-React.useState('');
+	//- TODOS AND SEARCH VALUES
+	const {
+		item: todos,
+		saveItem: saveTodos,
+		loading,
+		error,
+	} = useLocalStorage('TODOS_V1', []);
+	const [searchValue, setSearchValue] =
+		React.useState('');
 
-    //- TODOS STATUS
-    const completedTodos = todos.filter(
-    	(todo) => !!todo.completed
-    ).length;
-    const totalTodos = todos.length;
+	//- TODOS STATUS
+	const completedTodos = todos.filter(
+		(todo) => !!todo.completed
+	).length;
+	const totalTodos = todos.length;
 
-    // FILTERING
-    const searchedTodos = todos.filter((todo) => {
-    	const todoText = todo.text.toLowerCase();
-    	const searchText = searchValue.toLowerCase();
-    	return todoText.includes(searchText);
-    });
+	// FILTERING
+	const searchedTodos = todos.filter((todo) => {
+		const todoText = todo.text.toLowerCase();
+		const searchText = searchValue.toLowerCase();
+		return todoText.includes(searchText);
+	});
 
-    // COMPLETING TODOS
-    const completeTodo = (text) => {
-    	const newTodos = [...todos];
-    	const todoIndex = newTodos.findIndex(
-    		(todo) => todo.text === text
-    	);
-    	newTodos[todoIndex].completed = true;
-    	saveTodos(newTodos);
-    };
+	// COMPLETING TODOS
+	const completeTodo = (text) => {
+		const newTodos = [...todos];
+		const todoIndex = newTodos.findIndex(
+			(todo) => todo.text === text
+		);
+		newTodos[todoIndex].completed = true;
+		saveTodos(newTodos);
+	};
 
-    // DELETING TODOS
-    const deleteTodo = (text) => {
-    	const newTodos = [...todos];
-    	const todoIndex = newTodos.findIndex(
-    		(todo) => todo.text === text
-    	);
-    	newTodos.splice(todoIndex, 1);
-    	saveTodos(newTodos);
-    };
+	// DELETING TODOS
+	const deleteTodo = (text) => {
+		const newTodos = [...todos];
+		const todoIndex = newTodos.findIndex(
+			(todo) => todo.text === text
+		);
+		newTodos.splice(todoIndex, 1);
+		saveTodos(newTodos);
+	};
 
-    // PROVIDER RETURN
-    return (
-    	<TodoContext.Provider
-    		value={{
-    			loading,
-    			error,
-    			completedTodos,
-    			totalTodos,
-    			searchValue,
-    			setSearchValue,
-    			searchedTodos,
-    			completeTodo,
-    			deleteTodo,
-    		}}
-    	>
-    		{children}
-    	</TodoContext.Provider>
-    );
-
+	// PROVIDER RETURN
+	return (
+		<TodoContext.Provider
+			value={{
+				loading,
+				error,
+				completedTodos,
+				totalTodos,
+				searchValue,
+				setSearchValue,
+				searchedTodos,
+				completeTodo,
+				deleteTodo,
+			}}
+		>
+			{children}
+		</TodoContext.Provider>
+	);
 }
 
 export { TodoContext, TodoProvider };
-
 ```
 
-All the code we used to have in the App component is moved to the TodoContext component, who is going to provide all the todos data by using the custom hooks.
+All the code previously in the App component is moved to the `TodoContext` component, which will provide all the todos data using custom hooks.
 
-In the code above the context is created using `createContext()`. But also a Provider function/component must be created, this component is in charge to provide the specific data required by the components.
+In the code above, the context is created using `createContext()`. Additionally, a `Provider` component must be created. This component is responsible for providing the specific data required by the components.
 
-The TodoProvider component receives another component as an argument (children), so in the return this argument can be inserted between the TodoContext.Provider tag.
+The `TodoProvider` component receives another component as an argument `(children)`. In the return statement, this argument is placed inside the `TodoContext.Provider` tag.
 
-It is important to notice that in the return there is a attribute called value, this attribute represents an object with all the methods and information managed by the TodoProvider, by this way, any component wrapped can access the information/method required.
+It is important to note that the value attribute in the return statement represents an object containing all the methods and information managed by the `TodoProvider`. This allows any wrapped component to access the necessary information and methods.
 
 ### Render Functions
 
-```
-
+```javascript
 function AppUI() {
-return (
-<>
-<TodoCounter />
-<TodoSearch />
-<TodoContext.Consumer>
-{({
-loading,
-error,
-searchedTodos,
-completeTodo,
-deleteTodo
-}) => (
-<TodoList>
-{/_ Loading and error states _/}
-{loading && (
-<>
-<TodosLoading />
-<TodosLoading />
-<TodosLoading />
-<TodosLoading />
-</>
-)}
-{error && <TodosError />}
-{!loading &&
-searchedTodos.todos === 0 && (
-<EmptyTodos />
-)}
+	return (
+		<>
+			<TodoCounter />
+			<TodoSearch />
+			<TodoContext.Consumer>
+				{({
+					loading,
+					error,
+					searchedTodos,
+					completeTodo,
+					deleteTodo,
+				}) => (
+					<TodoList>
+						{/_ Loading and error states _/}
+						{loading && (
+							<>
+								<TodosLoading />
+								<TodosLoading />
+								<TodosLoading />
+								<TodosLoading />
+							</>
+						)}
+						{error && <TodosError />}
+						{!loading &&
+							searchedTodos.todos === 0 && (
+								<EmptyTodos />
+							)}
 
-    					{searchedTodos.map((todo) => (
-    						<TodoItem
-    							key={todo.text}
-    							text={todo.text}
-    							completed={todo.completed}
-    							onComplete={() =>
-    								completeTodo(todo.text)
-    							}
-    							onDelete={() =>
-    								deleteTodo(todo.text)
-    							}
-    						/>
-    					))}
-    				</TodoList>
-    			)}
-    		</TodoContext.Consumer>
+						{searchedTodos.map((todo) => (
+							<TodoItem
+								key={todo.text}
+								text={todo.text}
+								completed={todo.completed}
+								onComplete={() =>
+									completeTodo(todo.text)
+								}
+								onDelete={() =>
+									deleteTodo(todo.text)
+								}
+							/>
+						))}
+					</TodoList>
+				)}
+			</TodoContext.Consumer>
 
-    		<CreateTodoButton />
-    	</>
-    );
-
+			<CreateTodoButton />
+		</>
+	);
 }
-
 ```
 
-After the context is created, it is necessary to use a Consumer tag, which is going to use render function to execute the rendering of the children component. That function receives a parameter, an object whose properties are the method/data requiered by the children component.
+After the context is created, a `Consumer` tag is used to render the children components. The `Consumer` tag uses a render function that receives a parameter—an object containing the methods and data required by the children components.
 
 <br>
 <br>
@@ -1424,179 +1419,174 @@ After the context is created, it is necessary to use a Consumer tag, which is go
 
 `useContext()` is the React hook that allow us to use a React context created previously, inside a component.
 
-```
-
+```javascript
 import React from 'react';
 import './TodoSearch.css';
 import { TodoContext } from '../TodoContext';
 
 function TodoSearch() {
-const { searchValue, setSearchValue } =
-React.useContext(TodoContext);
+	const { searchValue, setSearchValue } =
+		React.useContext(TodoContext);
 
-    return (
-    	<input
-    		placeholder='Cortar cebolla'
-    		className='TodoSearch'
-    		value={searchValue}
-    		onChange={(event) => {
-    			setSearchValue(event.target.value);
-    		}}
-    	/>
-    );
-
+	return (
+		<input
+			placeholder='Cortar cebolla'
+			className='TodoSearch'
+			value={searchValue}
+			onChange={(event) => {
+				setSearchValue(event.target.value);
+			}}
+		/>
+	);
 }
 
 // Good practice, export a property object instead of an export default
 export { TodoSearch };
-
 ```
 
-In the code above the Context is imported, so by `useContext()` we can access any method or value returned by this context inside our component.
+In the code above, the context is imported, allowing us to access any method or value provided by this context inside our component using `useContext()`.
 
-This method has several advantages: - Do not require to use the <TodoContext.Consumer> - Do not requiere to use render functions - The code remains much clean
+This method has several advantages:
+
+- It eliminates the need to use `<TodoContext.Consumer>`.
+- It avoids the need for render functions.
+- It keeps the code much cleaner.
 
 <br>
 <br>
 
 ## [REACT PORTALS]()
-The React Portals are like doors allowing us to move a component to another HTML node. For example, it is very common to render the full application in an HTML node called App. The React portals can move a component and render it inside another component called, for example, modal.
 
-```
+React Portals are like doors that allow us to move a component to another HTML node. For example, it is common to render the entire application within an HTML node called App. React Portals enable us to move a component and render it inside a different HTML node, such as a modal.
 
+```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 function Modal({ children }) {
-return ReactDOM.createPortal(
-
-<div className='Modal'>{children}</div>,
-document.getElementById('modal')
-);
+	return ReactDOM.createPortal(
+		<div className='Modal'>{children}</div>,
+		document.getElementById('modal')
+	);
 }
 
 export { Modal };
-
 ```
 
-In the code above, the `createPortal()` method receives two parameter, one is the element to be inserted and the another one is where this element is going to be inserted.
+In the code above, the `createPortal()` method takes two parameters: the first is the element to be inserted, and the second is the target node where this element will be inserted.
 
 <br>
 <br>
 
 ## [REACT FORMS LAYOUT]()
-Inside the Modal component there is a form inserted. This form appears or disappears everytime the `+` icon is clicked.
 
-```
+Inside the Modal component, there is a form that appears or disappears every time the `+` icon is clicked.
 
+```javascript
 import React from 'react';
 import './TodoForm.css';
 
 function TodoForm() {
-return (
-
-<form
-onSubmit={(event) => {
-event.preventDefault();
-}} >
-<label>Escribe tu nuevo TODO</label>
-<textarea placeholder='Cortar cebolla para el almuerzo' />
-<div className='TodoForm-buttonContainer'>
-<button
+	return (
+		<form
+			onSubmit={(event) => {
+				event.preventDefault();
+			}}
+		>
+			<label>Escribe tu nuevo TODO</label>
+			<textarea placeholder='Cortar cebolla para el almuerzo' />
+			<div className='TodoForm-buttonContainer'>
+				<button
 					type=''
 					className='TodoForm-button TodoForm-button--cancel'
 				>
-Cancelar
-</button>
-<button
+					Cancelar
+				</button>
+				<button
 					type='submit'
 					className='TodoForm-button TodoForm-button--add'
 				>
-Añadir
-</button>
-</div>
-</form>
-);
+					Añadir
+				</button>
+			</div>
+		</form>
+	);
 }
 
 export { TodoForm };
-
 ```
 
-It is important to notice that by default every button is type submit if we do not specify another type. Another important aspect is that with `preventDefault()` we are avoiding the page reloading after the click on the submit button.
+It's important to note that, by default, every button in a form is of type `submit` unless another type is specified. Another key aspect is that using `preventDefault()` prevents the page from reloading when the submit button is clicked.
 
-This reloading means the data collected in the form is going the be sent to a URL, but if it is not specified the data is sent to the same page, executing the reloading page.
+This reloading typically occurs because the form data is sent to a specified URL. If no URL is specified, the data is sent to the same page, causing the page to reload.
 
 <br>
 <br>
 
 ## [REACT CONTEXT INSIDE REACT PORTALS]()
 
-```
-
+```javascript
 import React from 'react';
 import { TodoContext } from '../TodoContext';
 import './TodoForm.css';
 
 function TodoForm() {
-// CONTEXT DATA
-const { addTodo, setOpenModal } =
-React.useContext(TodoContext);
+	// CONTEXT DATA
+	const { addTodo, setOpenModal } =
+		React.useContext(TodoContext);
 
-    // LOCAL STATE
-    const [newTodoValue, setNewTodoValue] =
-    	React.useState('');
+	// LOCAL STATE
+	const [newTodoValue, setNewTodoValue] =
+		React.useState('');
 
-    // SUBMIT BUTTON
-    const onSubmit = (event) => {
-    	event.preventDefault();
-    	addTodo(newTodoValue);
-    	setOpenModal(false);
-    };
+	// SUBMIT BUTTON
+	const onSubmit = (event) => {
+		event.preventDefault();
+		addTodo(newTodoValue);
+		setOpenModal(false);
+	};
 
-    // CANCEL BUTTON
-    const onCancel = () => {
-    	setOpenModal(false);
-    };
+	// CANCEL BUTTON
+	const onCancel = () => {
+		setOpenModal(false);
+	};
 
-    // VALUE CAPTURE
-    const onChange = (event) => {
-    	setNewTodoValue(event.target.value);
-    };
+	// VALUE CAPTURE
+	const onChange = (event) => {
+		setNewTodoValue(event.target.value);
+	};
 
-    return (
-    	<form onSubmit={onSubmit}>
-    		<label>Escribe tu nuevo TODO</label>
-    		<textarea
-    			placeholder='Cortar cebolla para el almuerzo'
-    			value={newTodoValue}
-    			onChange={onChange}
-    		/>
-    		<div className='TodoForm-buttonContainer'>
-    			<button
-    				type=''
-    				className='TodoForm-button TodoForm-button--cancel'
-    				onClick={onCancel}
-    			>
-    				Cancelar
-    			</button>
-    			<button
-    				type='submit'
-    				className='TodoForm-button TodoForm-button--add'
-    			>
-    				Añadir
-    			</button>
-    		</div>
-    	</form>
-    );
-
+	return (
+		<form onSubmit={onSubmit}>
+			<label>Escribe tu nuevo TODO</label>
+			<textarea
+				placeholder='Cortar cebolla para el almuerzo'
+				value={newTodoValue}
+				onChange={onChange}
+			/>
+			<div className='TodoForm-buttonContainer'>
+				<button
+					type=''
+					className='TodoForm-button TodoForm-button--cancel'
+					onClick={onCancel}
+				>
+					Cancelar
+				</button>
+				<button
+					type='submit'
+					className='TodoForm-button TodoForm-button--add'
+				>
+					Añadir
+				</button>
+			</div>
+		</form>
+	);
 }
 
 export { TodoForm };
-
 ```
 
-In the code above we are setting up the different functions to manage the data collected in the form, as we can we are using the global context to get specific methods.
+In the code above, we set up various functions to manage the data collected from the form. As we can see, the global context is used to access specific methods needed for handling the form data.
 
 <br>
 <br>
@@ -1607,31 +1597,28 @@ In the code above we are setting up the different functions to manage the data c
 
 ### `npm run build`
 
-Help us to create a production version of our application. This new version is based on static files like html or js, without needing a node.js server.
+Help us create a production version of our application. This new version will be based on static files like HTML and JavaScript, without needing a Node.js server.
 
-It is important to edtit the package-json properly, because based on the homepage property the build command will set the different routes inside the html file.
+It is important to edit the `package.json` file properly because the `homepage` property will determine how the build command sets the routes inside the HTML file.
 
-```
-
+```json
 "homepage": "https://juancumbeq.github.io/platzi-react-fundamentals"
-
 ```
 
 ### `gh-pages` BRANCH
-gh-pages is a tool that allow us to create another branch with only the build command files, also allow us to deploy our application into github pages.
+
+`gh-pages` is a tool that allows us to create another branch containing only the build files and also enables us to deploy our application to GitHub Pages.
 
 `npm i --save-dev gh-pages` is the command to install this tool.
 
 ### CUSTOM COMMANDS
 
-```
-
+```json
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-
 ```
 
-With the predeploy command we are creating the build directory, on the other hand, with the deploy command we are using gh-pages to deploy the content of our build folder directly into the github server.
+With the `predeploy` command, we create the build directory. On the other hand, with the `deploy` command, we use `gh-pages` to deploy the contents of our build folder directly to the GitHub server.
 
 <br>
 <br>
@@ -1639,29 +1626,27 @@ With the predeploy command we are creating the build directory, on the other han
 # REACT: #UNDERTHEHOOD
 
 ## [DIFFERENCES BETWEEN REACT.JS VERSIONS]()
+
 It is important to know and master how to change between the different React versions.
 
 ### REACT 18
 
-```
-
+```javascript
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './components/App';
 
 const root = ReactDOM.createRoot(
-document.getElementById('root')
+	document.getElementById('root')
 );
 
 root.render(<App />);
-
 ```
 
 ### REACT 17
 
-```
-
+```javascript
 import React from 'react';
 import './index.css';
 import App from './components/App';
@@ -1669,7 +1654,6 @@ import { render } from 'react-dom';
 
 const root = document.getElementById('root');
 render(<App tab='home' />, root);
-
 ```
 
 <br>
@@ -1684,12 +1668,15 @@ render(<App tab='home' />, root);
 <br>
 
 ## [NEXT.JS]()
+
 Next.js is a framework based on React.js
+
 `npx create-next-app@lastest app-name`
 
 <br>
 
 ## [VITE]()
+
 `npm create vite@lastest app-name `
 
 <br>
@@ -1699,7 +1686,3 @@ Next.js is a framework based on React.js
 # AUTHOR
 
 This project was developed by _Juan Cumbe_. If you have any questions or suggestions about the project, feel free to contact me via [e-mail](mailto:hello@juancumbe.com) or my [Linkedin](https://www.linkedin.com/in/juancumbeq/) profile.
-
-```
-
-```
