@@ -6,6 +6,12 @@
 
 <br>
 
+# COURSE PROYECT
+
+TodoMachine is my first application developed with React.js, created as part of a fundamentals course. This web application allows users to add tasks through a dialog box, which can then be marked as completed or deleted. It also provides the option to filter pending tasks using a search feature. As an added value, the use of localStorage ensures some level of data persistence. Through TodoMachine, I not only learned how to handle events and create a smooth user experience, but also how to implement good frontend development practices in React​
+
+<br>
+
 # LEARNINGS
 
 This is my first React application. I've tested the technology before, but never developed a full application. I learned a lot from this course:
@@ -23,6 +29,12 @@ This is my first React application. I've tested the technology before, but never
 
 <br>
 
+# DEMO
+
+[https://juancumbeq.github.io/platzi-react-fundamentals/](https://juancumbeq.github.io/platzi-react-fundamentals/)
+
+<br>
+
 # WIREFRAMES
 
 [https://www.figma.com/design/3aZkIjXMEzBDACmWxqUVes/TODO-Machine-Mockup?node-id=0-1](https://www.figma.com/design/3aZkIjXMEzBDACmWxqUVes/TODO-Machine-Mockup?node-id=0-1)
@@ -33,11 +45,6 @@ This is my first React application. I've tested the technology before, but never
 
 [https://www.figma.com/proto/3aZkIjXMEzBDACmWxqUVes/TODO-Machine-Mockup?type=design&amp%3Bnode-id=1-3&amp%3Bt=NH0HT6nS2TxaLKp4-1&amp%3Bscaling=min-zoom&amp%3Bpage-id=0%3A1&amp%3Bstarting-point-node-id=1%3A3&amp%3Bmode=design&node-id=1-3&starting-point-node-id=1%3A3](https://www.figma.com/proto/3aZkIjXMEzBDACmWxqUVes/TODO-Machine-Mockup?type=design&amp%3Bnode-id=1-3&amp%3Bt=NH0HT6nS2TxaLKp4-1&amp%3Bscaling=min-zoom&amp%3Bpage-id=0%3A1&amp%3Bstarting-point-node-id=1%3A3&amp%3Bmode=design&node-id=1-3&starting-point-node-id=1%3A3)
 
-<br>
-
-# DEMO
-
-[https://juancumbeq.github.io/platzi-react-fundamentals/](https://juancumbeq.github.io/platzi-react-fundamentals/)
 
 <br>
 
