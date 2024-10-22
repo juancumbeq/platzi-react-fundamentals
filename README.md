@@ -8,7 +8,7 @@
 
 # COURSE PROYECT
 
-TodoMachine is my first application developed with React.js, created as part of a fundamentals course. This web application allows users to add tasks through a dialog box, which can then be marked as completed or deleted. It also provides the option to filter pending tasks using a search feature. As an added value, the use of localStorage ensures some level of data persistence. Through TodoMachine, I not only learned how to handle events and create a smooth user experience, but also how to implement good frontend development practices in React​
+TodoMachine is my first application developed with React.js, created as part of a fundamentals course. This web application allows users to add tasks through a dialog box, which can then be marked as completed or deleted. It also provides the option to filter pending tasks using a search feature. As an added value, the use of localStorage ensures some level of data persistence. Through TodoMachine, I not only learned how to handle events and create a smooth user experience, but also how to implement good frontend development practices in React​.
 
 <br>
 
